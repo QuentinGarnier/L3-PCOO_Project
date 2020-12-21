@@ -17,5 +17,5 @@ public class TeachingUnit {
         return this.name;
     }
 
-    
+
 }
