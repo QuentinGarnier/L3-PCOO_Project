@@ -27,7 +27,7 @@ public abstract class TeachingUnit {
         return this.nbCredits;
     }
 
-    protected void setNbCredits(int nb) {
+    public void setNbCredits(int nb) {
         this.nbCredits = nb;
     }
 

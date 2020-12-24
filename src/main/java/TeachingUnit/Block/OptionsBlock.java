@@ -5,6 +5,7 @@ import TeachingUnit.SchoolClass;
 
 /**
  * @author Quentin Garnier
+ *          Léa Bloom
  */
 
 public class OptionsBlock extends Block {
@@ -13,9 +14,10 @@ public class OptionsBlock extends Block {
     /**
      * @param classes Options of the block, with the SAME number of credits!
      */
-    public OptionsBlock(String n, String c, SchoolClass[] classes) {
-        super(n, c, classes[0].getNbCredits());
+    public OptionsBlock(String n, String c, SchoolClass[] classes, int nbc) {
+        super(n, c, nbc);
         this.options = classes;
+        for(SchoolClass scs : this.options) scs.setNbCredits(nbc);
     }
 
     public SchoolClass[] getOptions() {
@@ -40,4 +42,6 @@ public class OptionsBlock extends Block {
             }
         }
     }
+
+
 }
