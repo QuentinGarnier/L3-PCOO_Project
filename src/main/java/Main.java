@@ -1,5 +1,6 @@
 import TeachingUnit.*;
 import TeachingUnit.Block.*;
+import XMLReader.XMLReader;
 
 /**
  * @author Quentin Garnier
@@ -8,6 +9,8 @@ import TeachingUnit.Block.*;
 public class Main {
     public static void main(String[] args) {
         System.out.println("HelloWorld!");
+
+        XMLReader.read("data/data.xml", "student");
 
         // Tests temporaires des classes (décommentez pour voir si ça marche nickel pour vous) :
         /*
