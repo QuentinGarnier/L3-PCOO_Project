@@ -1,4 +1,7 @@
 import TeachingUnit.Block.Block;
+import TeachingUnit.Grade;
+
+import java.util.ArrayList;
 
 /**
  * @author Quentin Garnier
@@ -31,18 +34,23 @@ public class Program {
         return this.blocks;
     }
 
-    public float getAverageGrade() {
+    public float getAverageGrade(Grade[] grades) {
         float avg = 0;
         int totalCredits = 0;
         for(Block b : this.blocks) {
-            avg += b.getAverageGrade()*b.getNbCredits();
+            avg += b.getAverageGrade(grades)*b.getNbCredits();
             totalCredits += b.getNbCredits();
         }
         return (totalCredits==0? 0:avg/totalCredits);
     }
 
+    public float getAverageGrade(ArrayList<Grade> grades) {
+        Grade[] gds = grades.toArray(new Grade[0]);
+        return this.getAverageGrade(gds);
+    }
+
     // Fonction vérifiant si la moyenne du programme est d'au moins 10/20.
-    public boolean isValidated() {
-        return this.getAverageGrade() >= 10;
+    public boolean isValidated(Grade[] grades) {
+        return this.getAverageGrade(grades) >= 10;
     }
 }

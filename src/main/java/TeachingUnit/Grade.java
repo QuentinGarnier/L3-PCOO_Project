@@ -9,18 +9,23 @@ package TeachingUnit;
 public class Grade {
     private int value;
     private boolean abi;
+    private String code;
 
-    // Une note mal renseignée (donc pas entre 0 et 20) est comptée comme une ABI.
-    // Une ABI a une valeur de 0.
-    public Grade(int x) {
+    /**
+     * @param x Valeur de la note (entre 0 et 20). Une note mal renseignée (donc pas entre 0 et 20) est comptée comme une ABI et a une valeur de 0.
+     * @param c Code du cours associé à la note.
+     */
+    public Grade(int x, String c) {
         this.abi = !(x>=0 && x<=20);
         this.value = (this.abi?0:x);
+        this.code = c;
     }
 
     //Constructeur vide pour définir une ABI.
-    public Grade() {
+    public Grade(String c) {
         this.value = 0;
         this.abi = true;
+        this.code = c;
     }
 
     public int getValue() {
@@ -30,4 +35,14 @@ public class Grade {
     public boolean isAnABI() {
         return this.abi;
     }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    @Override
+    public String toString() {
+        return (this.abi?"ABI [":value+" [")+this.code+"]";
+    }
+
 }

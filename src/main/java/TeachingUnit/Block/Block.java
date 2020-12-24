@@ -12,6 +12,5 @@ public abstract class Block extends TeachingUnit {
         super(n, c, nb);
     }
 
-    public abstract float getAverageGrade();
-    public abstract void addGrade(Grade g, String code);
+    public abstract float getAverageGrade(Grade[] grades);
 }

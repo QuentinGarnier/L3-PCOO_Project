@@ -30,22 +30,13 @@ public class CompositeBlock extends Block {
 
     /* Selon le sujet, il s'agit de la moyenne pondérée ici aussi, donc le nombre de crédits de chaque cours
        influe sur le calcul de la moyenne totale du bloc. */
-    public float getAverageGrade() {
+    public float getAverageGrade(Grade[] grades) {
         float avg = 0;
         int totalCredits = 0;
-        for(SchoolClass cl : this.classes) {
-            avg += cl.getAverageGrade()*cl.getNbCredits();
-            totalCredits += cl.getNbCredits();
+        for(SchoolClass scl : this.classes) {
+            avg += scl.getAverageGrade(grades)*scl.getNbCredits();
+            totalCredits += scl.getNbCredits();
         }
         return (totalCredits==0? 0:avg/totalCredits);
-    }
-
-    public void addGrade(Grade g, String code) {
-        for(SchoolClass scl : this.classes) {
-            if(code.equals(scl.getCode())) {
-                scl.addGrade(g);
-                break;
-            }
-        }
     }
 }

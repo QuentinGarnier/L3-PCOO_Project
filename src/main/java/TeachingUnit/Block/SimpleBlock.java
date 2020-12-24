@@ -19,11 +19,7 @@ public class SimpleBlock extends Block {
         return this.sClass;
     }
 
-    public float getAverageGrade() {
-        return this.sClass.getAverageGrade();
-    }
-
-    public void addGrade(Grade g, String code) {
-        if(code.equals(this.sClass.getCode())) this.sClass.addGrade(g);
+    public float getAverageGrade(Grade[] grades) {
+        return this.sClass.getAverageGrade(grades);
     }
 }

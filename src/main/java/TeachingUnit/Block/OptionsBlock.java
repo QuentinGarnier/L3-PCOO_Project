@@ -27,20 +27,10 @@ public class OptionsBlock extends Block {
     public int nbOfOptions() {
         return this.options.length;
     }
-
-    public float getAverageGrade() {
+    public float getAverageGrade(Grade[] grades) {
         float avg = 0;
-        for(SchoolClass cl : this.options) if(cl.getAverageGrade() > avg) avg = cl.getAverageGrade();
+        for(SchoolClass scl : this.options) if(scl.getAverageGrade(grades) > avg) avg = scl.getAverageGrade(grades);
         return avg;
-    }
-
-    public void addGrade(Grade g, String code) {
-        for(SchoolClass scl : this.options) {
-            if(code.equals(scl.getCode())) {
-                scl.addGrade(g);
-                break;
-            }
-        }
     }
 
 
