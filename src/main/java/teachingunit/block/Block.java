@@ -1,6 +1,7 @@
 package teachingunit.block;
 
 import teachingunit.Grade;
+import teachingunit.SchoolClass;
 import teachingunit.TeachingUnit;
 
 /**
@@ -13,4 +14,5 @@ public abstract class Block extends TeachingUnit {
     }
 
     public abstract float getAverageGrade(Grade[] grades);
+    public abstract SchoolClass[] getClasses();
 }

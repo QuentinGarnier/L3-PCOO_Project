@@ -20,7 +20,7 @@ public class OptionsBlock extends Block {
         for(SchoolClass scs : this.options) scs.setNbCredits(nbc);
     }
 
-    public SchoolClass[] getOptions() {
+    public SchoolClass[] getClasses() {
         return this.options;
     }
 

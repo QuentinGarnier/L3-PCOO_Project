@@ -15,6 +15,11 @@ public class SimpleBlock extends Block {
         this.sClass = new SchoolClass(n, c, nb);
     }
 
+    // Not very useful for simple blocks:
+    public SchoolClass[] getClasses() {
+        return new SchoolClass[]{this.getSClass()};
+    }
+
     public SchoolClass getSClass() {
         return this.sClass;
     }

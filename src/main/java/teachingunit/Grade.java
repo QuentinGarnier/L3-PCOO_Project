@@ -42,7 +42,7 @@ public class Grade {
 
     @Override
     public String toString() {
-        return (this.abi?"ABI [":value+" [")+this.code+"]";
+        return (this.abi?"ABI":""+this.value);
     }
 
 }
