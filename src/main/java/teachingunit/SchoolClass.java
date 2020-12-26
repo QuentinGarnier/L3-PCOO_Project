@@ -1,4 +1,4 @@
-package TeachingUnit;
+package teachingunit;
 
 import java.util.ArrayList;
 

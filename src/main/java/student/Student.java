@@ -1,5 +1,7 @@
-import TeachingUnit.Grade;
+package student;
 
+import program.Program;
+import teachingunit.Grade;
 import java.util.ArrayList;
 
 /**

@@ -1,4 +1,4 @@
-package XMLReader;
+package xmlreader;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

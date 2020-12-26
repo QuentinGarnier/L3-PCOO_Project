@@ -1,6 +1,7 @@
-import TeachingUnit.Block.Block;
-import TeachingUnit.Grade;
+package program;
 
+import teachingunit.Block.Block;
+import teachingunit.Grade;
 import java.util.ArrayList;
 
 /**

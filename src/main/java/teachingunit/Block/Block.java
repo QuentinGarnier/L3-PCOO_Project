@@ -1,7 +1,7 @@
-package TeachingUnit.Block;
+package teachingunit.Block;
 
-import TeachingUnit.Grade;
-import TeachingUnit.TeachingUnit;
+import teachingunit.Grade;
+import teachingunit.TeachingUnit;
 
 /**
  * @author Quentin Garnier

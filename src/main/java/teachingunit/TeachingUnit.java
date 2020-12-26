@@ -1,4 +1,4 @@
-package TeachingUnit;
+package teachingunit;
 
 /**
  * @author Quentin Garnier

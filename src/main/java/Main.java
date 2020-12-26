@@ -1,6 +1,6 @@
-import TeachingUnit.*;
-import TeachingUnit.Block.*;
-import XMLReader.XMLReader;
+import teachingunit.Block.*;
+import teachingunit.*;
+import xmlreader.XMLReader;
 
 /**
  * @author Quentin Garnier
@@ -13,8 +13,8 @@ public class Main {
         XMLReader.read("data/data.xml", "student");
 
         // Tests temporaires des classes (décommentez pour voir si ça marche nickel pour vous) :
-        /*
-        Student emma = new Student(21604250, "Emma", "KITTY");
+
+        student.Student emma = new student.Student(21604250, "Emma", "KITTY");
 
         SimpleBlock pcoo = new SimpleBlock("PCOO", "SPUF053", 6);
         SimpleBlock progfonct = new SimpleBlock("Prog. Fonct.", "SPUF054",6);
@@ -22,7 +22,7 @@ public class Main {
         SchoolClass[] options = {new SchoolClass("Crypto","SPUF060",6), new SchoolClass("Archit.","SPUF061",6)};
         OptionsBlock cryptoOuArchit = new OptionsBlock("Options S5", "SPUF055", options, 6);
 
-        Program prog = new Program("L3 Info", "L3I");
+        program.Program prog = new program.Program("L3 Info", "L3I");
         prog.setBlocks(pcoo, progfonct, al, cryptoOuArchit);
 
         emma.addGrade(new Grade(18, "SPUF053"));
@@ -37,7 +37,7 @@ public class Main {
         float finalGrade = prog.getAverageGrade(emma.getGrades()); //en théorie 14.25, donc les calculs sont bons !
         System.out.println(emma.getGrades());
         System.out.println(finalGrade);
-        */
+
 
     }
 }
