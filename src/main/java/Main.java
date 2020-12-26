@@ -1,3 +1,4 @@
+import minutes.Minutes;
 import program.Program;
 import student.Student;
 import teachingunit.block.*;
@@ -16,7 +17,7 @@ public class Main {
 
         // Tests temporaires des classes (décommentez pour voir si ça marche nickel pour vous) :
 
-        Student emma = new student.Student(21604250, "Emma", "KITTY");
+        Student emma = new Student(21604250, "Emma", "KITTY");
 
         SimpleBlock pcoo = new SimpleBlock("PCOO", "SPUF053", 6);
         SimpleBlock progfonct = new SimpleBlock("Prog. Fonct.", "SPUF054",6);
@@ -24,7 +25,7 @@ public class Main {
         SchoolClass[] options = {new SchoolClass("Crypto","SPUF060",6), new SchoolClass("Archit.","SPUF061",6)};
         OptionsBlock cryptoOuArchit = new OptionsBlock("Options S5", "SPUF055", options, 6);
 
-        Program prog = new program.Program("L3 Info", "L3I");
+        Program prog = new Program("L3 Info", "L3I");
         prog.setBlocks(pcoo, progfonct, al, cryptoOuArchit);
 
         emma.addGrade(new Grade(18, "SPUF053"));
@@ -40,6 +41,9 @@ public class Main {
         System.out.println(emma.getGrades());
         System.out.println(finalGrade);
 
+        Student[] stdList = new Student[1];
+        stdList[0] = emma;
+        Minutes.create(prog, stdList);
 
     }
 }
