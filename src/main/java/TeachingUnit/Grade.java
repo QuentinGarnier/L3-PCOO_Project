@@ -7,7 +7,7 @@ package TeachingUnit;
  */
 
 public class Grade {
-    private int value;
+    private double value;
     private boolean abi;
     private String code;
 
@@ -15,7 +15,7 @@ public class Grade {
      * @param x Valeur de la note (entre 0 et 20). Une note mal renseignée (donc pas entre 0 et 20) est comptée comme une ABI et a une valeur de 0.
      * @param c Code du cours associé à la note.
      */
-    public Grade(int x, String c) {
+    public Grade(double x, String c) {
         this.abi = !(x>=0 && x<=20);
         this.value = (this.abi?0:x);
         this.code = c;
@@ -28,7 +28,7 @@ public class Grade {
         this.code = c;
     }
 
-    public int getValue() {
+    public double getValue() {
         return this.value;
     }
 
