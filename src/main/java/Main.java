@@ -1,4 +1,4 @@
-import teachingunit.Block.*;
+import teachingunit.block.*;
 import teachingunit.*;
 import xmlreader.XMLReader;
 

@@ -1,4 +1,4 @@
-package teachingunit.Block;
+package teachingunit.block;
 
 import teachingunit.Grade;
 import teachingunit.TeachingUnit;
