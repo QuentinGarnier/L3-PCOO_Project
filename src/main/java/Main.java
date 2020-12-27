@@ -15,9 +15,11 @@ public class Main {
 
         XMLReader.read("data/data.xml", "student");
 
-        // Tests temporaires des classes (décommentez pour voir si ça marche nickel pour vous) :
 
-        Student emma = new Student(21604250, "Emma", "KITTY");
+        // Tests temporaires des classes :
+
+        Student emma = new Student(21604250, "Emma", "Kitty");
+        Student george = new Student(21602987, "George", "Arys");
 
         SimpleBlock pcoo = new SimpleBlock("PCOO", "SPUF053", 6);
         SimpleBlock progfonct = new SimpleBlock("Prog. Fonct.", "SPUF054",6);
@@ -30,15 +32,17 @@ public class Main {
 
         emma.addGrade(new Grade(16, "SPUF053")); //moy = 16
         emma.addGrade(new Grade(17.5, "SPUF054")); //moy = 17.5
-        emma.addGrade(new Grade(-1, "SPUF052")); //moy = ABI
         emma.addGrade(new Grade(12.5, "SPUF060")); //moy = 12.5
+        emma.addGrade(new Grade(-1, "SPUF052")); //moy = ABI
 
-        Grade finalGrade = prog.getGrade(emma.getGrades()); //en théorie 14.25, donc les calculs sont bons !
-        System.out.println(emma.getGrades());
-        System.out.println(finalGrade);
+        george.addGrade(new Grade(10, "SPUF053")); //moy = 16
+        george.addGrade(new Grade(6.234, "SPUF054")); //moy = 17.5
+        george.addGrade(new Grade(19.999, "SPUF060")); //moy = 12.5
+        george.addGrade(new Grade(11, "SPUF052")); //moy = ABI
 
-        Student[] stdList = new Student[1];
+        Student[] stdList = new Student[2];
         stdList[0] = emma;
+        stdList[1] = george;
         Minutes.create(prog, stdList);
 
     }
