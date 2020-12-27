@@ -24,7 +24,7 @@ public class SimpleBlock extends Block {
         return this.sClass;
     }
 
-    public float getAverageGrade(Grade[] grades) {
-        return this.sClass.getAverageGrade(grades);
+    public Grade getGrade(Grade[] grades) {
+        return this.sClass.getGrade(grades);
     }
 }

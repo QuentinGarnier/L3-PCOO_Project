@@ -28,6 +28,18 @@ public class Grade {
         this.code = c;
     }
 
+    public void setCode(String newCode) {
+        this.code = newCode;
+    }
+
+    public void setValue(float newValue) {
+        this.value = newValue;
+    }
+
+    public void setABI(boolean newABIValue) {
+        this.abi = newABIValue;
+    }
+
     public double getValue() {
         return this.value;
     }

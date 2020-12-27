@@ -13,6 +13,6 @@ public abstract class Block extends TeachingUnit {
         super(n, c, nb);
     }
 
-    public abstract float getAverageGrade(Grade[] grades);
+    public abstract Grade getGrade(Grade[] grades);
     public abstract SchoolClass[] getClasses();
 }

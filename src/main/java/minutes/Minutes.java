@@ -11,6 +11,8 @@ import teachingunit.block.SimpleBlock;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Minutes {
     public static void create(Program program, Student[] students) {
@@ -20,7 +22,7 @@ public class Minutes {
             PrintWriter writer = new PrintWriter("output/minutes_" + pName + ".csv"); // Open the file or create it if it doesn't exist
 
             writer.println(header(program));
-            for(Student std : students) writer.println(studentLine(std));
+            for(Student std : students) writer.println(studentLine(std, program));
             writer.print("END - 4 last lines");
 
             writer.close();
@@ -47,10 +49,19 @@ public class Minutes {
         return "\"" + tu.getCode() + " - " + tu.getName() + "\"";
     }
 
-    private static String studentLine(Student student) {
+    private static String studentLine(Student student, Program p) {
         String str = "\"" + student.getId() + "\",\"" + student.getName() + "\",\"" + student.getFirstname() + "\"";
-        //tri des notes selon les ue : sachant que pour les ue sans note il faut quand même écrire ,"", dans le csv
-        for(Grade g : student.getGrades()) str += ",\"" + g + "\"";
+        ArrayList<Grade> grades = student.getGrades();
+        ArrayList<Grade> avGrades = new ArrayList<Grade>();
+/*
+        ArrayList<String> listp = new ArrayList<String>();
+        listp.add(program.getCode());
+        for(Block b : program.getBlocks()) {
+            listp.add(b.getCode());
+            if(!(b instanceof SimpleBlock)) for(SchoolClass scl : b.getClasses()) listp.add(scl.getCode());
+        }*/
+
+        str += ",\"" + "gTOREMPLACE" + "\"";
         return str;
     }
 }

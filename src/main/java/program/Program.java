@@ -35,23 +35,33 @@ public class Program {
         return this.blocks;
     }
 
-    public float getAverageGrade(Grade[] grades) {
-        float avg = 0;
+    public Grade getGrade(Grade[] grades) {
+        double avg = 0;
         int totalCredits = 0;
+        boolean oneGradeMin = false;
+        boolean onlyABI = true;
+
         for(Block b : this.blocks) {
-            avg += b.getAverageGrade(grades)*b.getNbCredits();
-            totalCredits += b.getNbCredits();
+            Grade grd = b.getGrade(grades); //on récupère la note du bloc (null si pas de note)
+            if(grd != null) {
+                if(!oneGradeMin) oneGradeMin = true;
+                avg += grd.getValue() * b.getNbCredits();
+                totalCredits += b.getNbCredits();
+                if(!grd.isAnABI()) onlyABI = false;
+            }
         }
-        return (totalCredits==0? 0:avg/totalCredits);
+
+        if(oneGradeMin) {
+            avg = (totalCredits == 0 ? 0 : avg / totalCredits); //opérateur ternaire juste en sécurité pour éviter les divisions par 0
+            Grade res = new Grade(avg, this.getCode());
+            res.setABI(onlyABI);
+            return res;
+        }
+        return null;
     }
 
-    public float getAverageGrade(ArrayList<Grade> grades) {
+    public Grade getGrade(ArrayList<Grade> grades) {
         Grade[] gds = grades.toArray(new Grade[0]);
-        return this.getAverageGrade(gds);
-    }
-
-    // Fonction vérifiant si la moyenne du programme est d'au moins 10/20.
-    public boolean isValidated(Grade[] grades) {
-        return this.getAverageGrade(grades) >= 10;
+        return this.getGrade(gds);
     }
 }
