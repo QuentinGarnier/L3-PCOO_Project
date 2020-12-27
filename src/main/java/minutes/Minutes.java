@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+/**
+ * @author Quentin Garnier
+ */
+
 public class Minutes {
     private static MinutesData minutesData;
 
@@ -99,11 +103,12 @@ public class Minutes {
 
             case 3: str += "Note moyenne\",\"\",\"\"";
                     minutesData.calculateAvgs();
-                    for(double d : minutesData.getAverages()) str += ",\"" + d + "\"";
+                    for(double d : minutesData.getAverages()) str += ",\"" + (d>-1?d:"") + "\"";
                     break;
 
             case 4: str += "Écart-type\",\"\",\"\"";
-                    for(double d : minutesData.getStddevns()) str += ",\"" + d + "\"";
+                    minutesData.calculateStddevns();
+                    for(double d : minutesData.getStddevns()) str += ",\"" + (d>-1?d:"") + "\"";
                     break;
 
             default: str = "";
