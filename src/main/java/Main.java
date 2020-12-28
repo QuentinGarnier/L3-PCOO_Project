@@ -1,3 +1,4 @@
+import graphics.GMWindow;
 import minutes.Minutes;
 import program.Program;
 import student.Student;
@@ -18,6 +19,10 @@ public class Main {
 
         // Tests temporaires des classes :
 
+        GMWindow gmWindow = new GMWindow();
+        gmWindow.display();
+
+        /*
         Student emma = new Student(21604250, "Emma", "Kitty");
         Student george = new Student(21602987, "George", "Arys");
 
@@ -44,6 +49,7 @@ public class Main {
         stdList[0] = emma;
         stdList[1] = george;
         Minutes.create(prog, stdList);
+        */
 
     }
 }
