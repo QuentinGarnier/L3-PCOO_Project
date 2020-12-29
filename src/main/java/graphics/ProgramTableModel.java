@@ -2,7 +2,6 @@ package graphics;
 
 import program.Program;
 import student.Student;
-import teachingunit.Grade;
 import teachingunit.SchoolClass;
 import teachingunit.block.*;
 
@@ -74,7 +73,7 @@ public class ProgramTableModel extends AbstractTableModel {
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    void changeList(ArrayList<Student> stds) {
+    void changeStudentsList(ArrayList<Student> stds) {
         this.students = stds;
     }
 }

@@ -2,12 +2,10 @@ package graphics;
 
 import program.Program;
 import student.Student;
-import sun.management.snmp.jvmmib.EnumJvmThreadContentionMonitoring;
 import xmlreader.XMLReader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 /**
  * Class: GradesManagement Window (GMWindow)

@@ -1,5 +1,4 @@
 import graphics.GMWindow;
-import minutes.Minutes;
 import program.Program;
 import student.Student;
 import teachingunit.block.*;
