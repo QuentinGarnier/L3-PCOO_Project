@@ -65,6 +65,11 @@ public class Program {
         return this.getGrade(gds);
     }
 
+    public boolean equals(Program p) {
+        if(p == null) return false;
+        return this.code.equals(p.getCode());
+    }
+
     @Override
     public String toString() {
         return this.code + " - " + this.name;

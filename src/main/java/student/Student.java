@@ -2,6 +2,9 @@ package student;
 
 import program.Program;
 import teachingunit.Grade;
+import teachingunit.SchoolClass;
+import teachingunit.block.*;
+
 import java.util.ArrayList;
 
 /**
@@ -49,6 +52,17 @@ public class Student {
 
     public Program getProgram() {
         return this.program;
+    }
+
+    public Grade[] calculateGradesOf(Program p) {
+        Grade[] gradesInArray = this.grades.toArray(new Grade[0]);
+        ArrayList<Grade> gs = new ArrayList<Grade>();
+        gs.add(p.getGrade(this.grades));
+        for (Block b : p.getBlocks()) {
+            gs.add(b.getGrade(gradesInArray));
+            if (!(b instanceof SimpleBlock)) for (SchoolClass scl : b.getClasses()) gs.add(scl.getGrade(gradesInArray));
+        }
+        return gs.toArray(new Grade[0]);
     }
 
 }

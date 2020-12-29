@@ -21,6 +21,7 @@ public class Main {
 
         Student emma = new Student(21604250, "Emma", "Kitty");
         Student george = new Student(21602987, "George", "Arys");
+        Student michel = new Student(21602987, "Michel", "Miche");
 
         SimpleBlock pcoo = new SimpleBlock("PCOO", "SPUF053", 6);
         SimpleBlock progfonct = new SimpleBlock("Prog. Fonct.", "SPUF054",6);
@@ -31,22 +32,27 @@ public class Main {
         Program prog = new Program("L3 Info", "L3I");
         prog.setBlocks(pcoo, progfonct, al, cryptoOuArchit);
 
-        emma.addGrade(new Grade(16, "SPUF053")); //moy = 16
-        emma.addGrade(new Grade(17.5, "SPUF054")); //moy = 17.5
-        emma.addGrade(new Grade(12.5, "SPUF060")); //moy = 12.5
-        emma.addGrade(new Grade(-1, "SPUF052")); //moy = ABI
+        emma.addGrade(new Grade(16, "SPUF053"));
+        emma.addGrade(new Grade(17.5, "SPUF054"));
+        emma.addGrade(new Grade(12.5, "SPUF060"));
+        emma.addGrade(new Grade(-1, "SPUF052")); //-1 <=> ABI
 
-        george.addGrade(new Grade(10, "SPUF053")); //moy = 16
-        george.addGrade(new Grade(6.234, "SPUF054")); //moy = 17.5
-        george.addGrade(new Grade(19.999, "SPUF060")); //moy = 12.5
-        george.addGrade(new Grade(11, "SPUF052")); //moy = ABI
-
-        Student[] stdList = new Student[2];
-        stdList[0] = emma;
-        stdList[1] = george;
+        george.addGrade(new Grade(10, "SPUF053"));
+        george.addGrade(new Grade(6.234, "SPUF054"));
+        george.addGrade(new Grade(-1, "SPUF061")); //-1 <=> ABI
+        george.addGrade(new Grade(19.98, "SPUF052"));
 
         Program prog2 = new Program("L3 Maths info", "L3MI");
         Program[] pList = new Program[] {prog, prog2};
+
+        emma.setProgram(prog);
+        george.setProgram(prog);
+        michel.setProgram(prog2);
+
+        Student[] stdList = new Student[3];
+        stdList[0] = emma;
+        stdList[1] = george;
+        stdList[2] = michel;
 
         GMWindow gmWindow = new GMWindow(pList, stdList); //à modifier quand elles auront push la classe XMLReader
         gmWindow.display();

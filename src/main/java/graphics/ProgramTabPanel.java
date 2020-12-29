@@ -29,7 +29,7 @@ class ProgramTabPanel extends JPanel {
         super(new BorderLayout());
         this.programs = prgs;
         this.students = stds;
-        this.currentProgram = this.programs[0];
+        this.currentProgram = this.programs[0]; //par défaut
         this.tableModel = new ProgramTableModel(currentProgram, this.students);
 
         //TITLE:
