@@ -17,8 +17,9 @@ class ProgramTabPanel extends JPanel {
     private ProgramTableModel tableModel;
     private JTable tab;
     private Program[] programs;
-    private Program currentProgram;
+    private int currentProgramIndex;
     private Student[] students;
+    private JComboBox programsList;
 
     /**
      * Constructor
@@ -26,27 +27,36 @@ class ProgramTabPanel extends JPanel {
      * @param stds: a list of all students to get their data
      */
     ProgramTabPanel(Program[] prgs, Student[] stds) {
+        this(prgs, stds, 0);
+    }
+
+    private ProgramTabPanel(Program[] prgs, Student[] stds, int defaultIndex) {
         super(new BorderLayout());
+        create(prgs, stds, defaultIndex);
+    }
+
+    private void create(Program[] prgs, Student[] stds, int defaultIndex) {
+
         this.programs = prgs;
         this.students = stds;
-        this.currentProgram = this.programs[0]; //par défaut
-        this.tableModel = new ProgramTableModel(currentProgram, this.students);
+        this.currentProgramIndex = defaultIndex; //par défaut
+        this.tableModel = new ProgramTableModel(programs[currentProgramIndex], this.students);
 
         //TITLE:
-        title("Programme : " + currentProgram.getName());
+        title("Programme : " + programs[currentProgramIndex].getName());
 
         //ARRAY:
         tab = new JTable(tableModel);
         tab.getTableHeader().setReorderingAllowed(false);
         tab.setRowHeight(30);
-        for(int i=0; i<tab.getModel().getColumnCount(); i++) tab.getColumnModel().getColumn(i).setMinWidth(180);
+        for(int i=0; i<tab.getModel().getColumnCount(); i++) tab.getColumnModel().getColumn(i).setMinWidth(140);
         JScrollPane scroll = new JScrollPane(tab, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.add(scroll, BorderLayout.CENTER);
         tab.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 
         //BUTTONS:
-        JPanel buttons = new JPanel();
+        JPanel footer = new JPanel();
         JButton buttonAdd = new JButton(new AddAction());
         JButton buttonRemove = new JButton(new RemoveAction());
         JButton buttonExport = new JButton(new ExportAction());
@@ -55,10 +65,19 @@ class ProgramTabPanel extends JPanel {
         buttonRemove.setToolTipText("Supprimer les lignes sélectionnées");
         buttonExport.setToolTipText("Exporter en format .csv");
 
-        buttons.add(buttonAdd);
-        buttons.add(buttonRemove);
-        buttons.add(buttonExport);
-        this.add(buttons, BorderLayout.SOUTH);
+        footer.add(buttonAdd);
+        footer.add(buttonRemove);
+        footer.add(buttonExport);
+
+        //Liste déroulante des programmes :
+        //JComboBox programsList;
+        programsList = new JComboBox(programs);
+        programsList.setSelectedIndex(defaultIndex);
+        programsList.addActionListener(new ScrollMenu());
+
+        //FOOTER :
+        footer.add(programsList);
+        this.add(footer, BorderLayout.SOUTH);
     }
 
     private void title(String txt) {
@@ -67,6 +86,11 @@ class ProgramTabPanel extends JPanel {
         titleL.setFont(new Font("Serif", Font.BOLD, 32));
         titleP.add(titleL);
         this.add(titleP, BorderLayout.NORTH);
+    }
+
+    private void reset(int index) {
+        removeAll();
+        create(programs, students, index);
     }
 
     private class AddAction extends AbstractAction {
@@ -96,7 +120,13 @@ class ProgramTabPanel extends JPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            Minutes.create(currentProgram, students);
+            Minutes.create(programs[currentProgramIndex], students);
+        }
+    }
+
+    private class ScrollMenu extends AbstractAction {
+        public void actionPerformed(ActionEvent e) {
+            reset(programsList.getSelectedIndex());
         }
     }
 }

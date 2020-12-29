@@ -58,7 +58,7 @@ public class Student {
         Grade[] gradesInArray = this.grades.toArray(new Grade[0]);
         ArrayList<Grade> gs = new ArrayList<Grade>();
         gs.add(p.getGrade(this.grades));
-        for (Block b : p.getBlocks()) {
+        if (p.getBlocks() != null) for (Block b : p.getBlocks()) {
             gs.add(b.getGrade(gradesInArray));
             if (!(b instanceof SimpleBlock)) for (SchoolClass scl : b.getClasses()) gs.add(scl.getGrade(gradesInArray));
         }

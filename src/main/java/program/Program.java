@@ -41,7 +41,7 @@ public class Program {
         boolean oneGradeMin = false;
         boolean onlyABI = true;
 
-        for(Block b : this.blocks) {
+        if(this.blocks != null) for(Block b : this.blocks) {
             Grade grd = b.getGrade(grades); //on récupère la note du bloc (null si pas de note)
             if(grd != null) {
                 if(!oneGradeMin) oneGradeMin = true;

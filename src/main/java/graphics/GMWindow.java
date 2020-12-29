@@ -21,10 +21,10 @@ public class GMWindow extends JFrame {
         setup();
         //this.data = xmlReader;
 
-        //Menu :
-        menu();
+        //Barre de menu en haut :
+        menu(); //(fonction à modifier,juste un test)
 
-        //Différentes pages :
+        //Différentes pages (onglets) :
         ProgramTabPanel programTabPanel = new ProgramTabPanel(ps,stds);
         StudentTabPanel studentTabPanel = new StudentTabPanel(stds[0], ps[0].getBlocks()[0].getClasses());
 
@@ -35,10 +35,6 @@ public class GMWindow extends JFrame {
         tabs.addTab("Étudiants", studentTabPanel);
         getContentPane().add(tabs);
     }
-
-
-
-    //PARTS:
 
     private void setup() {
         setTitle("GM - GradesManagement");
@@ -67,10 +63,6 @@ public class GMWindow extends JFrame {
 
         setJMenuBar(menuBar);
     }
-
-
-
-    //FUNCTIONS:
 
     public void display() {
         setVisible(true);

@@ -42,6 +42,8 @@ public class Main {
         george.addGrade(new Grade(19.98, "SPUF052"));
 
         Program prog2 = new Program("L3 Maths info", "L3MI");
+        SimpleBlock algebre = new SimpleBlock("Algèbre", "SPMA051", 6);
+        prog2.setBlocks(algebre, pcoo);
         Program[] pList = new Program[] {prog, prog2};
 
         emma.setProgram(prog);
