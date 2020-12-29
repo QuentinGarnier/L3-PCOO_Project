@@ -19,7 +19,6 @@ public class Main {
 
         // Tests temporaires des classes :
 
-
         Student emma = new Student(21604250, "Emma", "Kitty");
         Student george = new Student(21602987, "George", "Arys");
 
@@ -45,10 +44,11 @@ public class Main {
         Student[] stdList = new Student[2];
         stdList[0] = emma;
         stdList[1] = george;
-        //Minutes.create(prog, stdList);
 
+        Program prog2 = new Program("L3 Maths info", "L3MI");
+        Program[] pList = new Program[] {prog, prog2};
 
-        GMWindow gmWindow = new GMWindow(prog, stdList); //à modifier quand elles auront push la classe
+        GMWindow gmWindow = new GMWindow(pList, stdList); //à modifier quand elles auront push la classe XMLReader
         gmWindow.display();
 
     }

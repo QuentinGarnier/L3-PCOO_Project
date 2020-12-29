@@ -1,9 +1,13 @@
 package graphics;
 
+import program.Program;
 import student.Student;
+import teachingunit.SchoolClass;
+import teachingunit.block.*;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class: ProgramTableModel
@@ -12,21 +16,21 @@ import java.util.ArrayList;
 
 public class ProgramTableModel extends AbstractTableModel {
     private ArrayList<Student> students = new ArrayList<Student>();
-    private String[] headers = {"N° Étudiant", "Prénom", "Nom"};
+    private ArrayList<String> headers = new ArrayList<String>();
 
-    ProgramTableModel() {
+    ProgramTableModel(Program p, Student[] stds) {
         super();
 
-        students.add(new Student(21603567, "Johnathan", "Sykes"));
-        students.add(new Student(21603566, "Nicolas", "Van der Kampf"));
-        students.add(new Student(21603565, "Damien", "Cuthbert"));
-        students.add(new Student(21603564, "Corinne", "Valance"));
-        students.add(new Student(21603563, "Emilie", "Schrödinger"));
-        students.add(new Student(21603562, "Delphine", "Duke"));
-        students.add(new Student(21603561, "Eric", "Twomk"));
-        students.add(new Student(21603560, "Erica", "Juil"));
-        students.add(new Student(21603568, "Michel", "Michel"));
-        students.add(new Student(21603569, "Xiaomi", "Markalopolof"));
+        headers.add("N° Étudiant");
+        headers.add("Prénom");
+        headers.add("Nom");
+        headers.add(p.toString());
+        for(Block b : p.getBlocks()) {
+            headers.add(b.toString());
+            if(!(b instanceof SimpleBlock)) for(SchoolClass scl : b.getClasses()) headers.add(scl.toString());
+        }
+
+        students.addAll(Arrays.asList(stds));
     }
 
     public int getRowCount() {
@@ -34,12 +38,12 @@ public class ProgramTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return headers.length;
+        return headers.size();
     }
 
     @Override
     public String getColumnName(int i) {
-        return headers[i];
+        return headers.get(i);
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {

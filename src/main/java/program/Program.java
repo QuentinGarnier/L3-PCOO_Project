@@ -64,4 +64,9 @@ public class Program {
         Grade[] gds = grades.toArray(new Grade[0]);
         return this.getGrade(gds);
     }
+
+    @Override
+    public String toString() {
+        return this.code + " - " + this.name;
+    }
 }

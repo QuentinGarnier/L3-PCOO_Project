@@ -58,11 +58,11 @@ public class Minutes {
     }
 
     private static String info(Program program) {
-        return "\"" + program.getCode() + " - " + program.getName() + "\"";
+        return "\"" + program + "\"";
     }
 
     private static String info(TeachingUnit tu) {
-        return "\"" + tu.getCode() + " - " + tu.getName() + "\"";
+        return "\"" + tu + "\"";
     }
 
     private static String studentLine(Student student, Program p) {

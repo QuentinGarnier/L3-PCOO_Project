@@ -14,23 +14,26 @@ import java.awt.event.ActionEvent;
  */
 
 class ProgramTabPanel extends JPanel {
-    private ProgramTableModel tableModel = new ProgramTableModel();
+    private ProgramTableModel tableModel;
     private JTable tab;
-    private Program program;
+    private Program[] programs;
+    private Program currentProgram;
     private Student[] students;
 
     /**
      * Constructor
-     * @param p: a specific program
+     * @param prgs: a list of programs
      * @param stds: a list of all students to get their data
      */
-    ProgramTabPanel(Program p, Student[] stds) {
+    ProgramTabPanel(Program[] prgs, Student[] stds) {
         super(new BorderLayout());
-        this.program = p;
+        this.programs = prgs;
         this.students = stds;
+        this.currentProgram = this.programs[0];
+        this.tableModel = new ProgramTableModel(currentProgram, this.students);
 
         //TITLE:
-        title("Programme : "+program.getName());
+        title("Programme : " + currentProgram.getName());
 
         //ARRAY:
         tab = new JTable(tableModel);
@@ -93,7 +96,7 @@ class ProgramTabPanel extends JPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            Minutes.create(program, students);
+            Minutes.create(currentProgram, students);
         }
     }
 }

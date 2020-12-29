@@ -18,7 +18,7 @@ public class GMWindow extends JFrame {
     private XMLReader data;
 
     //parametres = XMLReader uniquement ! à modifier quand xmlreader fini
-    public GMWindow(Program p, Student[] stds) {
+    public GMWindow(Program[] ps, Student[] stds) {
         super();
         setup();
         //this.data = xmlReader;
@@ -27,8 +27,8 @@ public class GMWindow extends JFrame {
         menu();
 
         //Différentes pages :
-        ProgramTabPanel programTabPanel = new ProgramTabPanel(p,stds);
-        StudentTabPanel studentTabPanel = new StudentTabPanel(stds[0], p.getBlocks()[0].getClasses());
+        ProgramTabPanel programTabPanel = new ProgramTabPanel(ps,stds);
+        StudentTabPanel studentTabPanel = new StudentTabPanel(stds[0], ps[0].getBlocks()[0].getClasses());
 
         //Gestion des onglets :
         JTabbedPane tabs = new JTabbedPane(); //tabs regroupe tous les onglets
