@@ -8,7 +8,6 @@ import teachingunit.SchoolClass;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 /**
  * Class: JPanel Tab for a specific student
@@ -41,7 +40,7 @@ public class StudentTabPanel extends CustomTabPanel {
         this.currentStudentIndex = index;
         this.students = stds;
         this.schoolClasses = sclClasses;
-        this.tableModel = new StudentTableModel(stds[(index<0?0:index)], sclClasses);
+        this.tableModel = new StudentTableModel((index < 0? null: stds[index]), sclClasses);
 
         //TITLE & LIST (HEADER):
         studentScrollMenu = new JComboBox(stds);
@@ -53,7 +52,7 @@ public class StudentTabPanel extends CustomTabPanel {
 
         //ARRAY:
         tab = new JTable(tableModel);
-        createTable(tab);
+        createTable(tab, false);
 
         //BUTTONS:
         JButton buttonAdd = new JButton(new AddAction());

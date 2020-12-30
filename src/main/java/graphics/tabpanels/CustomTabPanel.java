@@ -27,11 +27,13 @@ abstract class CustomTabPanel extends JPanel {
 
     }
 
-    void createTable(JTable jTable) {
+    void createTable(JTable jTable, boolean fixSizes) {
         jTable.getTableHeader().setReorderingAllowed(false);
         jTable.setRowHeight(30);
-        jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        for(int i=0; i<jTable.getModel().getColumnCount(); i++) jTable.getColumnModel().getColumn(i).setMinWidth(140);
+        if(fixSizes) {
+            jTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            for(int i=0; i<jTable.getModel().getColumnCount(); i++) jTable.getColumnModel().getColumn(i).setMinWidth(140);
+        }
         JScrollPane scroll = new JScrollPane(jTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.add(scroll, BorderLayout.CENTER);
     }

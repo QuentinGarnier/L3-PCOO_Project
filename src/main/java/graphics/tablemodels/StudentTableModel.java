@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class StudentTableModel extends AbstractTableModel {
     private ArrayList<String> headers = new ArrayList<String>();
-    private ArrayList<Grade> grades = new ArrayList<Grade>();
+    private ArrayList<Grade> grades;
     private ArrayList<SchoolClass> schoolClasses = new ArrayList<SchoolClass>(); //liste associée à grades
     private Student student;
 
@@ -22,51 +22,52 @@ public class StudentTableModel extends AbstractTableModel {
         super();
         this.student = stud;
 
-        headers.add("Code de l'UE");
-        headers.add("Nom de l'UE");
-        headers.add("Crédits ECTS");
-        headers.add("Note de l'étudiant");
+        this.headers.add("Code de l'UE");
+        this.headers.add("Nom de l'UE");
+        this.headers.add("Crédits ECTS");
+        this.headers.add("Note de l'étudiant");
 
+        this.grades = (stud == null? new ArrayList<Grade>(): stud.getGrades());
         setup(sclClasses);
     }
 
     public int getRowCount() {
-        return grades.size();
+        return this.grades.size();
     }
 
     public int getColumnCount() {
-        return headers.size();
+        return this.headers.size();
     }
 
     @Override
     public String getColumnName(int i) {
-        return headers.get(i);
+        return this.headers.get(i);
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 0: return grades.get(rowIndex).getCode();
-            case 1: return schoolClasses.get(rowIndex).getName();
-            case 2: return schoolClasses.get(rowIndex).getNbCredits();
-            case 3: return grades.get(rowIndex);
+            case 0: return this.grades.get(rowIndex).getCode();
+            case 1: return (this.schoolClasses.get(rowIndex) == null ? "" : this.schoolClasses.get(rowIndex).getName());
+            case 2: return (this.schoolClasses.get(rowIndex) == null ? "" : this.schoolClasses.get(rowIndex).getNbCredits());
+            case 3: return this.grades.get(rowIndex);
             default: return null;
         }
     }
 
     public void addGrade(Grade grade, SchoolClass schoolClass) {
-        grades.add(grade);
-        schoolClasses.add(schoolClass);
-        fireTableRowsInserted(grades.size() - 1, grades.size() - 1);
+        this.student.addGrade(grade);
+        this.schoolClasses.add(schoolClass);
+        fireTableRowsInserted(this.grades.size() - 1, this.grades.size() - 1);
     }
 
     public void removeGrade(int rowIndex) {
-        grades.remove(rowIndex);
-        schoolClasses.remove(rowIndex);
+        this.grades.remove(rowIndex);
+        this.schoolClasses.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
     private void setup(SchoolClass[] sclClasses) {
-        for(Grade g : grades) {
+        for(Grade g : this.grades) {
             addSchoolClassToGrade(g, sclClasses);
         }
     }

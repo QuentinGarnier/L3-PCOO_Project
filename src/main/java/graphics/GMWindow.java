@@ -4,6 +4,7 @@ import graphics.tabpanels.ProgramTabPanel;
 import graphics.tabpanels.StudentTabPanel;
 import program.Program;
 import student.Student;
+import teachingunit.SchoolClass;
 import xmlreader.XMLReader;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class GMWindow extends JFrame {
     private XMLReader data;
 
     //parametres = XMLReader uniquement ! à modifier quand xmlreader fini
-    public GMWindow(Program[] ps, Student[] stds) {
+    public GMWindow(Program[] ps, Student[] stds, SchoolClass[] schoolClasses) {
         super();
         setup();
         //this.data = xmlReader;
@@ -28,7 +29,7 @@ public class GMWindow extends JFrame {
 
         //Différentes pages (onglets) :
         ProgramTabPanel programTabPanel = new ProgramTabPanel(ps,stds);
-        StudentTabPanel studentTabPanel = new StudentTabPanel(stds, ps[0].getBlocks()[0].getClasses());
+        StudentTabPanel studentTabPanel = new StudentTabPanel(stds, schoolClasses);
 
         //Gestion des onglets :
         JTabbedPane tabs = new JTabbedPane(); //tabs regroupe tous les onglets
