@@ -56,12 +56,14 @@ public class StudentTabPanel extends CustomTabPanel {
 
         //BUTTONS:
         JButton buttonAdd = new JButton(new AddAction());
+        JButton buttonModify = new JButton(new ModifyAction());
         JButton buttonRemove = new JButton(new RemoveAction());
         buttonAdd.setToolTipText("Ajouter une note à l'étudiant sélectionné");
+        buttonModify.setToolTipText("Modifier une note de l'étudiant sélectionné");
         buttonRemove.setToolTipText("Supprimer les notes des lignes sélectionnées");
 
         //FOOTER:
-        footer(buttonAdd, buttonRemove);
+        footer(buttonAdd, buttonModify, buttonRemove);
     }
 
     private void reset(int index) {
@@ -77,7 +79,35 @@ public class StudentTabPanel extends CustomTabPanel {
 
         public void actionPerformed(ActionEvent e) {
             if(currentStudentIndex < 0) JOptionPane.showMessageDialog(null, "Veuillez choisir un étudiant avant de lui ajouter une note.", "No student selected!", JOptionPane.WARNING_MESSAGE);
-            else tableModel.addGrade(new Grade(20, "1234"), new SchoolClass("TEST","1234", 1));
+            else {
+                JPanel popup = new JPanel(new GridLayout(0,1));
+                JLabel text = new JLabel("Entrez une nouvelle note :");
+                JComboBox classesList = new JComboBox(schoolClasses);
+                JSpinner nb = new JSpinner(new SpinnerNumberModel(0, 0, 20, 1));
+                JCheckBox checkBox = new JCheckBox("ABI");
+                popup.add(text);
+                popup.add(classesList);
+                popup.add(nb);
+                popup.add(checkBox);
+                int result = JOptionPane.showConfirmDialog(null, popup, "Ajouter une note",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if(result == JOptionPane.OK_OPTION) {
+                    SchoolClass cl = schoolClasses[classesList.getSelectedIndex()];
+                    tableModel.addGrade(new Grade((checkBox.isSelected()? -1: (Integer) nb.getValue()), cl.getCode()), cl);
+                }
+            }
+        }
+    }
+
+
+    private class ModifyAction extends AbstractAction {
+        private ModifyAction() {
+            super("Modifier une note");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if(currentStudentIndex < 0) JOptionPane.showMessageDialog(null, "Vous devez sélectionner une note pour pouvoir la modifier.", "No grade selected!", JOptionPane.WARNING_MESSAGE);
+            else ; //à modifier : mettre l'action de modifier
         }
     }
 
