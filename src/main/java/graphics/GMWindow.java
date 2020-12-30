@@ -1,5 +1,7 @@
 package graphics;
 
+import graphics.tabpanels.ProgramTabPanel;
+import graphics.tabpanels.StudentTabPanel;
 import program.Program;
 import student.Student;
 import xmlreader.XMLReader;
@@ -26,7 +28,7 @@ public class GMWindow extends JFrame {
 
         //Différentes pages (onglets) :
         ProgramTabPanel programTabPanel = new ProgramTabPanel(ps,stds);
-        StudentTabPanel studentTabPanel = new StudentTabPanel(stds[0], ps[0].getBlocks()[0].getClasses());
+        StudentTabPanel studentTabPanel = new StudentTabPanel(stds, ps[0].getBlocks()[0].getClasses());
 
         //Gestion des onglets :
         JTabbedPane tabs = new JTabbedPane(); //tabs regroupe tous les onglets

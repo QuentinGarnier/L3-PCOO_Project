@@ -27,7 +27,7 @@ public class Minutes {
             PrintWriter writer = new PrintWriter("output/minutes_" + pName + ".csv"); // Open the file or create it if it doesn't exist
 
             writer.println(header(program));
-            for(Student std : students) writer.println(studentLine(std, program));
+            for(Student std : students) if(program.equals(std.getProgram())) writer.println(studentLine(std, program));
             for(int i=1; i<5; i++) writer.println(footer(i));
 
             writer.close();

@@ -1,4 +1,4 @@
-package graphics;
+package graphics.tablemodels;
 
 import program.Program;
 import student.Student;
@@ -18,7 +18,7 @@ public class ProgramTableModel extends AbstractTableModel {
     private ArrayList<String> headers = new ArrayList<String>();
     private Program program;
 
-    ProgramTableModel(Program prog, Student[] studentsList) {
+    public ProgramTableModel(Program prog, Student[] studentsList) {
         super();
         this.program = prog;
         headers.add("N° Étudiant");
@@ -61,19 +61,5 @@ public class ProgramTableModel extends AbstractTableModel {
                 if(columnIndex >= headers.size()) return null;
                 return students.get(rowIndex).calculateGradesOf(program)[columnIndex-3];
         }
-    }
-
-    void addStudent(Student std) {
-        students.add(std);
-        fireTableRowsInserted(students.size() - 1, students.size() - 1);
-    }
-
-    void removeStudent(int rowIndex) {
-        students.remove(rowIndex);
-        fireTableRowsDeleted(rowIndex, rowIndex);
-    }
-
-    void changeStudentsList(ArrayList<Student> stds) {
-        this.students = stds;
     }
 }
