@@ -65,4 +65,8 @@ public class Student {
         return gs.toArray(new Grade[0]);
     }
 
+    @Override
+    public String toString() {
+        return this.firstname + " " + this.name;
+    }
 }
