@@ -71,6 +71,47 @@ public class StudentTabPanel extends CustomTabPanel {
         create(students, schoolClasses, index);
     }
 
+    /**
+     * For the classes 'AddAction' and 'ModifyAction' below.
+     * @param addNotModify is true for addButton and false for modifyButton.
+     */
+    private void createPopup(boolean addNotModify) {
+        JPanel popup = new JPanel(new GridLayout(0, 1));
+        JLabel text = new JLabel(addNotModify ? "Entrez une nouvelle note :" : "Modifier la note sélectionnée :");
+        JTextField nbField = new JTextField();
+        JComboBox classesList = new JComboBox(schoolClasses);
+        JCheckBox checkBox = new JCheckBox("ABI");
+        popup.add(text);
+        popup.add(nbField);
+        if (addNotModify) popup.add(classesList);
+        popup.add(checkBox);
+        int result = JOptionPane.showConfirmDialog(null, popup, addNotModify ? "Add grade" : "Modify grade",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                String nbStr;
+                if (checkBox.isSelected() && nbField.getText().equals("")) nbStr = "0"; //met à 0 afin de ne pas provoquer d'erreur
+                else nbStr = nbField.getText().replaceAll(",", "."); //permet d'écrire (par exemple) 0,5 comme 0.5
+                double nb = Double.parseDouble(nbStr);
+                if (nb < 0 || nb > 20) errorInputPopup();
+                else {
+                    SchoolClass cl = schoolClasses[classesList.getSelectedIndex()];
+                    if (addNotModify) tableModel.addGrade(new Grade((checkBox.isSelected() ? -1 : nb), cl.getCode()), cl);
+                    else tableModel.modifyGrade(tab.getSelectedRow(), nb, checkBox.isSelected());
+                }
+            } catch (NumberFormatException e) {
+                errorInputPopup();
+            }
+        }
+    }
+
+    private void errorInputPopup() {
+        JOptionPane.showMessageDialog(null,
+                "Erreur : valeur entrée incorrecte. Veuillez indiquer un nombre entre 0 et 20.",
+                "Error: not a number", JOptionPane.WARNING_MESSAGE);
+    }
+
+
 
     private class AddAction extends AbstractAction {
         private AddAction() {
@@ -79,23 +120,11 @@ public class StudentTabPanel extends CustomTabPanel {
 
         public void actionPerformed(ActionEvent e) {
             if(currentStudentIndex < 0) JOptionPane.showMessageDialog(null, "Veuillez choisir un étudiant avant de lui ajouter une note.", "No student selected!", JOptionPane.WARNING_MESSAGE);
-            else {
-                JPanel popup = new JPanel(new GridLayout(0,1));
-                JLabel text = new JLabel("Entrez une nouvelle note :");
-                JComboBox classesList = new JComboBox(schoolClasses);
-                JSpinner nb = new JSpinner(new SpinnerNumberModel(0, 0, 20, 1));
-                JCheckBox checkBox = new JCheckBox("ABI");
-                popup.add(text);
-                popup.add(classesList);
-                popup.add(nb);
-                popup.add(checkBox);
-                int result = JOptionPane.showConfirmDialog(null, popup, "Ajouter une note",
-                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if(result == JOptionPane.OK_OPTION) {
-                    SchoolClass cl = schoolClasses[classesList.getSelectedIndex()];
-                    tableModel.addGrade(new Grade((checkBox.isSelected()? -1: (Integer) nb.getValue()), cl.getCode()), cl);
-                }
-            }
+            else addGradePopup();
+        }
+
+        private void addGradePopup() {
+            createPopup(true);
         }
     }
 
@@ -106,8 +135,17 @@ public class StudentTabPanel extends CustomTabPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            if(currentStudentIndex < 0) JOptionPane.showMessageDialog(null, "Vous devez sélectionner une note pour pouvoir la modifier.", "No grade selected!", JOptionPane.WARNING_MESSAGE);
-            else ; //à modifier : mettre l'action de modifier
+            if(currentStudentIndex < 0 || tab.getSelectedRows().length == 0) JOptionPane.showMessageDialog(null,
+                    "Vous devez sélectionner une note pour pouvoir la modifier.",
+                    "No grade selected!", JOptionPane.WARNING_MESSAGE);
+            else if(tab.getSelectedRows().length > 1) JOptionPane.showMessageDialog(null,
+                    "Vous ne pouvez pas modifier plusieurs notes en même temps.",
+                    "Too many grades selected!", JOptionPane.WARNING_MESSAGE);
+            else modifyGradePopup();
+        }
+
+        private void modifyGradePopup() {
+            createPopup(false);
         }
     }
 

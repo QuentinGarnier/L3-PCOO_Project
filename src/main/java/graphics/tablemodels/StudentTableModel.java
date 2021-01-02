@@ -60,6 +60,12 @@ public class StudentTableModel extends AbstractTableModel {
         fireTableRowsInserted(this.grades.size() - 1, this.grades.size() - 1);
     }
 
+    public void modifyGrade(int gradeIndex, double value, boolean isAnABI) {
+        Grade grade = grades.get(gradeIndex);
+        grade.setValue(value);
+        grade.setABI(isAnABI);
+    }
+
     public void removeGrade(int rowIndex) {
         this.grades.remove(rowIndex);
         this.schoolClasses.remove(rowIndex);
