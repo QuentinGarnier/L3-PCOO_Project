@@ -1,7 +1,9 @@
 package program;
 
-import teachingunit.block.Block;
+import teachingunit.SchoolClass;
+import teachingunit.block.*;
 import teachingunit.Grade;
+
 import java.util.ArrayList;
 
 /**
@@ -21,6 +23,20 @@ public class Program {
 
     public void setBlocks(Block... bs) {
         this.blocks = bs;
+    }
+
+    private void addBlock(Block b) {
+        if(this.blocks == null) this.blocks = new Block[] {b};
+        else {
+            Block[] newBlocs = new Block[blocks.length + 1];
+            for (int i = 0; i < blocks.length; i++) newBlocs[i] = blocks[i];
+            newBlocs[blocks.length] = b;
+            this.blocks = newBlocs;
+        }
+    }
+
+    public void addClass(SchoolClass scl) {
+        this.addBlock(new SimpleBlock(scl));
     }
 
     public String getName() {

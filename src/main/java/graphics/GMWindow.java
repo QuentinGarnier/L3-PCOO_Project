@@ -8,6 +8,7 @@ import xmlreader.XMLReader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Class: GradesManagement Window (GMWindow)
@@ -18,16 +19,18 @@ public class GMWindow extends JFrame {
     private XMLReader data;
 
     //parametres = XMLReader uniquement ! à modifier quand xmlreader fini
-    public GMWindow(Program[] ps, Student[] stds, SchoolClass[] schoolClasses) {
+    public GMWindow(Program[] psArray, Student[] stds, SchoolClass[] schoolClasses) {
         super();
         setup();
         //this.data = xmlReader;
+        ArrayList<Program> ps = new ArrayList<Program>(); //à supprimer quand XMLReader prêt !
+        for(Program p : psArray) ps.add(p);
 
         //Barre de menu en haut :
         menu(); //(fonction à modifier,juste un test)
 
         //Différentes pages (onglets) :
-        ProgramTabPanel programTabPanel = new ProgramTabPanel(ps,stds);
+        ProgramTabPanel programTabPanel = new ProgramTabPanel(ps, stds);
         StudentTabPanel studentTabPanel = new StudentTabPanel(stds, schoolClasses);
         ClassesManagementPanel classesManagementPanel = new ClassesManagementPanel(ps);
 
