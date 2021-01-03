@@ -1,7 +1,6 @@
 package graphics;
 
-import graphics.tabpanels.ProgramTabPanel;
-import graphics.tabpanels.StudentTabPanel;
+import graphics.tabpanels.*;
 import program.Program;
 import student.Student;
 import teachingunit.SchoolClass;
@@ -30,12 +29,14 @@ public class GMWindow extends JFrame {
         //Différentes pages (onglets) :
         ProgramTabPanel programTabPanel = new ProgramTabPanel(ps,stds);
         StudentTabPanel studentTabPanel = new StudentTabPanel(stds, schoolClasses);
+        ClassesManagementPanel classesManagementPanel = new ClassesManagementPanel(ps);
 
         //Gestion des onglets :
         JTabbedPane tabs = new JTabbedPane(); //tabs regroupe tous les onglets
         tabs.setTabPlacement(JTabbedPane.TOP); //place la barre des onglets en haut
         tabs.addTab("Programmes", programTabPanel);
         tabs.addTab("Étudiants", studentTabPanel);
+        tabs.addTab("Organisation des cours", classesManagementPanel);
         getContentPane().add(tabs);
     }
 

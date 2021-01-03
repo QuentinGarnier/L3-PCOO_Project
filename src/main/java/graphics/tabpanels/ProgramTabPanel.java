@@ -57,7 +57,7 @@ public class ProgramTabPanel extends CustomTabPanel {
         JButton buttonExport = new JButton(new ExportAction());
         buttonExport.setToolTipText("Exporter en format .csv");
 
-        //FOOTER :
+        //FOOTER:
         footer(comboBoxLabel, programsList, new JLabel("  |  "), buttonExport);
     }
 

@@ -17,14 +17,18 @@ abstract class CustomTabPanel extends JPanel {
         super();
     }
 
-    void title(String txt, Component... componentsToAdd) {
+    void title(String txt, int size, Component... componentsToAdd) {
         JPanel titleP = new JPanel();
         JLabel titleL = new JLabel(txt, JLabel.CENTER);
-        titleL.setFont(new Font("Serif", Font.BOLD, 32));
+        titleL.setFont(new Font("Serif", Font.BOLD, size));
         titleP.add(titleL);
         if(componentsToAdd != null) for(Component c : componentsToAdd) titleP.add(c);
         this.add(titleP, BorderLayout.NORTH);
 
+    }
+
+    void title(String txt, Component... componentsToAdd) {
+        title(txt, 32, componentsToAdd);
     }
 
     void createTable(JTable jTable, boolean fixSizes) {
