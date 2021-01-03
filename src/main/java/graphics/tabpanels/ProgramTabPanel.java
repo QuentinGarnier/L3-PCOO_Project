@@ -46,7 +46,7 @@ public class ProgramTabPanel extends CustomTabPanel {
 
         //ARRAY:
         JTable tab = new JTable(tableModel);
-        createTable(tab, true);
+        this.add(createTable(tab, true), BorderLayout.CENTER);
 
         //PROGRAMS LIST:
         programsList = new JComboBox(programs);

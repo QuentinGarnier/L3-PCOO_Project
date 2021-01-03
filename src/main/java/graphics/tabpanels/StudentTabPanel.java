@@ -50,11 +50,24 @@ public class StudentTabPanel extends CustomTabPanel {
         if(index < 0) title("Sélectionnez un étudiant dans la liste : ", studentScrollMenu);
         else title("[" + stds[index].getId() + "] " + stds[index] + " ", studentScrollMenu);
 
-        //ARRAY:
-        tab = new JTable(tableModel);
-        createTable(tab, false);
+        //BODY (ARRAY & UP BUTTONS):
+        JPanel body = new JPanel(new BorderLayout());
+        JButton buttonAddStudent = new JButton(new AddStudentAction());
+        buttonAddStudent.setToolTipText("Ajouter un nouvel étudiant");
+        JButton buttonRemoveStudent = new JButton(new RemoveStudentAction());
+        buttonRemoveStudent.setToolTipText("Supprimer l'étudiant sélectionné");
+        JPanel buttonBar = new JPanel();
+        buttonBar.add(buttonAddStudent);
+        buttonBar.add(new JLabel(" | "));
+        buttonBar.add(buttonRemoveStudent);
+        buttonBar.setBackground(new Color(220,220,220));
+        body.add(buttonBar, BorderLayout.NORTH);
 
-        //BUTTONS:
+        tab = new JTable(tableModel);
+        body.add(createTable(tab, false), BorderLayout.CENTER);
+        this.add(body);
+
+        //BUTTONS (FOOTER):
         JButton buttonAdd = new JButton(new AddAction());
         JButton buttonModify = new JButton(new ModifyAction());
         JButton buttonRemove = new JButton(new RemoveAction());
@@ -169,6 +182,26 @@ public class StudentTabPanel extends CustomTabPanel {
                     for (int i = selection.length - 1; i >= 0; i--) tableModel.removeGrade(selection[i]);
                 }
             }
+        }
+    }
+
+    private class AddStudentAction extends AbstractAction {
+        private AddStudentAction() {
+            super("Ajouter un étudiant");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            reset(studentScrollMenu.getSelectedIndex());
+        }
+    }
+
+    private class RemoveStudentAction extends AbstractAction {
+        private RemoveStudentAction() {
+            super("Supprimer l'étudiant");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            reset(studentScrollMenu.getSelectedIndex());
         }
     }
 

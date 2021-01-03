@@ -31,7 +31,7 @@ abstract class CustomTabPanel extends JPanel {
         title(txt, 32, componentsToAdd);
     }
 
-    void createTable(JTable jTable, boolean fixSizes) {
+    JComponent createTable(JTable jTable, boolean fixSizes) {
         jTable.getTableHeader().setReorderingAllowed(false);
         jTable.setRowHeight(30);
         if(fixSizes) {
@@ -39,7 +39,7 @@ abstract class CustomTabPanel extends JPanel {
             for(int i=0; i<jTable.getModel().getColumnCount(); i++) jTable.getColumnModel().getColumn(i).setMinWidth(140);
         }
         JScrollPane scroll = new JScrollPane(jTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        this.add(scroll, BorderLayout.CENTER);
+        return scroll;
     }
 
     void footer(Component... componentsToAdd) {

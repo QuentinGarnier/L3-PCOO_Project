@@ -67,7 +67,7 @@ public class ClassesManagementPanel extends CustomTabPanel {
         lines.setText(linesTxt + "</body></html>");
 
         jPanel.add(lines);
-        this.add(scroll);
+        this.add(scroll, BorderLayout.CENTER);
     }
 
     private void reset() {
