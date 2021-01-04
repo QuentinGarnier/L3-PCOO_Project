@@ -1,13 +1,17 @@
 package graphics;
 
-import graphics.tabpanels.ProgramTabPanel;
-import graphics.tabpanels.StudentTabPanel;
+import graphics.tabpanels.*;
 import program.Program;
 import student.Student;
+import teachingunit.SchoolClass;
 import xmlreader.XMLReader;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 /**
  * Class: GradesManagement Window (GMWindow)
@@ -18,23 +22,29 @@ public class GMWindow extends JFrame {
     private XMLReader data;
 
     //parametres = XMLReader uniquement ! à modifier quand xmlreader fini
-    public GMWindow(Program[] ps, Student[] stds) {
+    public GMWindow(Program[] psArray, Student[] stds, SchoolClass[] schoolClasses) {
         super();
         setup();
         //this.data = xmlReader;
+        ArrayList<Program> ps = new ArrayList<Program>(); //à supprimer quand XMLReader prêt !
+        for(Program p : psArray) ps.add(p);
 
         //Barre de menu en haut :
-        menu(); //(fonction à modifier,juste un test)
+        menu();
 
         //Différentes pages (onglets) :
-        ProgramTabPanel programTabPanel = new ProgramTabPanel(ps,stds);
-        StudentTabPanel studentTabPanel = new StudentTabPanel(stds, ps[0].getBlocks()[0].getClasses());
+        ProgramTabPanel programTabPanel = new ProgramTabPanel(ps, stds);
+        StudentTabPanel studentTabPanel = new StudentTabPanel(stds, schoolClasses);
+        ClassesManagementPanel classesManagementPanel = new ClassesManagementPanel(ps);
 
         //Gestion des onglets :
         JTabbedPane tabs = new JTabbedPane(); //tabs regroupe tous les onglets
         tabs.setTabPlacement(JTabbedPane.TOP); //place la barre des onglets en haut
         tabs.addTab("Programmes", programTabPanel);
         tabs.addTab("Étudiants", studentTabPanel);
+        tabs.addTab("Organisation des cours", classesManagementPanel);
+
+        getContentPane().setBackground(new Color(80, 80, 80));
         getContentPane().add(tabs);
     }
 
@@ -48,22 +58,38 @@ public class GMWindow extends JFrame {
     }
 
     private void menu() {
+        Color colorBG = new Color(80,80,80);
+        Color colorFG = new Color(220,220,220);
+        Border border = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setFont(new Font("Serif", Font.PLAIN, 30));
+        menuBar.setBackground(colorBG);
+        menuBar.setBorder(border);
 
-        JMenu menu1 = new JMenu("Programmes");
-        JMenuItem premier = new JMenuItem("L3 Informatique");
+        JMenu menu1 = new JMenu("Fichier");
+        menu1.setFont(new Font(menu1.getFont().getName(), Font.PLAIN, 16));
+        menu1.setForeground(colorFG);
+
+        JMenuItem premier = new JMenuItem(new ActionExit());
+        premier.setBackground(colorBG);
+        premier.setForeground(colorFG);
+        premier.setFont(new Font(premier.getFont().getName(), Font.PLAIN, 16));
+        premier.setPreferredSize(new Dimension(200, 30));
+        premier.setBorder(border);
+
         menu1.add(premier);
-        JMenuItem second = new JMenuItem("L3 Maths-info");
-        menu1.add(second);
-        JMenuItem optionPrg = new JMenuItem("Contenus des programmes");
-        menu1.add(optionPrg);
         menuBar.add(menu1);
-
-        JMenu menu2 = new JMenu("Étudiants");
-        menuBar.add(menu2);
-
         setJMenuBar(menuBar);
+    }
+
+    private class ActionExit extends AbstractAction {
+        private ActionExit() {
+            super("Quitter");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
     }
 
     public void display() {

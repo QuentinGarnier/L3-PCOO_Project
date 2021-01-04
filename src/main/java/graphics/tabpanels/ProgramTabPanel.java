@@ -8,6 +8,7 @@ import student.Student;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 /**
  * Class: JPanel Tab for a specific program
@@ -25,8 +26,8 @@ public class ProgramTabPanel extends CustomTabPanel {
      * @param prgs: a list of programs
      * @param stds: a list of all students to get their data
      */
-    public ProgramTabPanel(Program[] prgs, Student[] stds) {
-        this(prgs, stds, 0);
+    public ProgramTabPanel(ArrayList<Program> prgs, Student[] stds) {
+        this(prgs.toArray(new Program[0]), stds, 0);
     }
 
     private ProgramTabPanel(Program[] prgs, Student[] stds, int defaultIndex) {
@@ -45,7 +46,7 @@ public class ProgramTabPanel extends CustomTabPanel {
 
         //ARRAY:
         JTable tab = new JTable(tableModel);
-        createTable(tab);
+        this.add(createTable(tab, true), BorderLayout.CENTER);
 
         //PROGRAMS LIST:
         programsList = new JComboBox(programs);
@@ -57,7 +58,7 @@ public class ProgramTabPanel extends CustomTabPanel {
         JButton buttonExport = new JButton(new ExportAction());
         buttonExport.setToolTipText("Exporter en format .csv");
 
-        //FOOTER :
+        //FOOTER:
         footer(comboBoxLabel, programsList, new JLabel("  |  "), buttonExport);
     }
 

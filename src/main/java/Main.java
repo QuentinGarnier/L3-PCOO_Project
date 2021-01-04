@@ -55,7 +55,14 @@ public class Main {
         stdList[1] = george;
         stdList[2] = michel;
 
-        GMWindow gmWindow = new GMWindow(pList, stdList); //à modifier quand elles auront push la classe XMLReader
+        SchoolClass[] lesCours = new SchoolClass[5];
+        lesCours[0] = pcoo.getSClass();
+        lesCours[1] = progfonct.getSClass();
+        lesCours[2] = al.getSClass();
+        lesCours[3] = cryptoOuArchit.getClasses()[0];
+        lesCours[4] = cryptoOuArchit.getClasses()[1];
+
+        GMWindow gmWindow = new GMWindow(pList, stdList, lesCours); //à modifier quand elles auront push la classe XMLReader
         gmWindow.display();
 
     }

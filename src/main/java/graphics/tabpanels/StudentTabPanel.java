@@ -8,7 +8,6 @@ import teachingunit.SchoolClass;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 /**
  * Class: JPanel Tab for a specific student
@@ -41,7 +40,7 @@ public class StudentTabPanel extends CustomTabPanel {
         this.currentStudentIndex = index;
         this.students = stds;
         this.schoolClasses = sclClasses;
-        this.tableModel = new StudentTableModel(stds[(index<0?0:index)], sclClasses);
+        this.tableModel = new StudentTableModel((index < 0? null: stds[index]), sclClasses);
 
         //TITLE & LIST (HEADER):
         studentScrollMenu = new JComboBox(stds);
@@ -51,24 +50,80 @@ public class StudentTabPanel extends CustomTabPanel {
         if(index < 0) title("Sélectionnez un étudiant dans la liste : ", studentScrollMenu);
         else title("[" + stds[index].getId() + "] " + stds[index] + " ", studentScrollMenu);
 
-        //ARRAY:
-        tab = new JTable(tableModel);
-        createTable(tab);
+        //BODY (ARRAY & UP BUTTONS):
+        JPanel body = new JPanel(new BorderLayout());
+        JButton buttonAddStudent = new JButton(new AddStudentAction());
+        buttonAddStudent.setToolTipText("Ajouter un nouvel étudiant");
+        JButton buttonRemoveStudent = new JButton(new RemoveStudentAction());
+        buttonRemoveStudent.setToolTipText("Supprimer l'étudiant sélectionné");
+        JPanel buttonBar = new JPanel();
+        buttonBar.add(buttonAddStudent);
+        buttonBar.add(new JLabel(" | "));
+        buttonBar.add(buttonRemoveStudent);
+        buttonBar.setBackground(new Color(220,220,220));
+        body.add(buttonBar, BorderLayout.NORTH);
 
-        //BUTTONS:
+        tab = new JTable(tableModel);
+        body.add(createTable(tab, false), BorderLayout.CENTER);
+        this.add(body);
+
+        //BUTTONS (FOOTER):
         JButton buttonAdd = new JButton(new AddAction());
+        JButton buttonModify = new JButton(new ModifyAction());
         JButton buttonRemove = new JButton(new RemoveAction());
         buttonAdd.setToolTipText("Ajouter une note à l'étudiant sélectionné");
+        buttonModify.setToolTipText("Modifier une note de l'étudiant sélectionné");
         buttonRemove.setToolTipText("Supprimer les notes des lignes sélectionnées");
 
         //FOOTER:
-        footer(buttonAdd, buttonRemove);
+        footer(buttonAdd, buttonModify, buttonRemove);
     }
 
     private void reset(int index) {
         removeAll();
         create(students, schoolClasses, index);
     }
+
+    /**
+     * For the classes 'AddAction' and 'ModifyAction' below.
+     * @param addNotModify is true for addButton and false for modifyButton.
+     */
+    private void createPopup(boolean addNotModify) {
+        JPanel popup = new JPanel(new GridLayout(0, 1));
+        JLabel text = new JLabel(addNotModify ? "Entrez une nouvelle note :" : "Modifier la note sélectionnée :");
+        JTextField nbField = new JTextField();
+        JComboBox classesList = new JComboBox(schoolClasses);
+        JCheckBox checkBox = new JCheckBox("ABI");
+        popup.add(text);
+        popup.add(nbField);
+        if (addNotModify) popup.add(classesList);
+        popup.add(checkBox);
+        int result = JOptionPane.showConfirmDialog(null, popup, addNotModify ? "Add grade" : "Modify grade",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                String nbStr;
+                if (checkBox.isSelected() && nbField.getText().equals("")) nbStr = "0"; //met à 0 afin de ne pas provoquer d'erreur
+                else nbStr = nbField.getText().replaceAll(",", "."); //permet d'écrire (par exemple) 0,5 comme 0.5
+                double nb = Double.parseDouble(nbStr);
+                if (nb < 0 || nb > 20) errorInputPopup();
+                else {
+                    SchoolClass cl = schoolClasses[classesList.getSelectedIndex()];
+                    if (addNotModify) tableModel.addGrade(new Grade((checkBox.isSelected() ? -1 : nb), cl.getCode()), cl);
+                    else tableModel.modifyGrade(tab.getSelectedRow(), nb, checkBox.isSelected());
+                }
+            } catch (NumberFormatException e) {
+                errorInputPopup();
+            }
+        }
+    }
+
+    private void errorInputPopup() {
+        JOptionPane.showMessageDialog(null,
+                "Erreur : valeur entrée incorrecte. Veuillez indiquer un nombre entre 0 et 20.",
+                "Error: not a number", JOptionPane.WARNING_MESSAGE);
+    }
+
 
 
     private class AddAction extends AbstractAction {
@@ -78,7 +133,32 @@ public class StudentTabPanel extends CustomTabPanel {
 
         public void actionPerformed(ActionEvent e) {
             if(currentStudentIndex < 0) JOptionPane.showMessageDialog(null, "Veuillez choisir un étudiant avant de lui ajouter une note.", "No student selected!", JOptionPane.WARNING_MESSAGE);
-            else tableModel.addGrade(new Grade(20, "1234"), new SchoolClass("TEST","1234", 1));
+            else addGradePopup();
+        }
+
+        private void addGradePopup() {
+            createPopup(true);
+        }
+    }
+
+
+    private class ModifyAction extends AbstractAction {
+        private ModifyAction() {
+            super("Modifier une note");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if(currentStudentIndex < 0 || tab.getSelectedRows().length == 0) JOptionPane.showMessageDialog(null,
+                    "Vous devez sélectionner une note pour pouvoir la modifier.",
+                    "No grade selected!", JOptionPane.WARNING_MESSAGE);
+            else if(tab.getSelectedRows().length > 1) JOptionPane.showMessageDialog(null,
+                    "Vous ne pouvez pas modifier plusieurs notes en même temps.",
+                    "Too many grades selected!", JOptionPane.WARNING_MESSAGE);
+            else modifyGradePopup();
+        }
+
+        private void modifyGradePopup() {
+            createPopup(false);
         }
     }
 
@@ -102,6 +182,26 @@ public class StudentTabPanel extends CustomTabPanel {
                     for (int i = selection.length - 1; i >= 0; i--) tableModel.removeGrade(selection[i]);
                 }
             }
+        }
+    }
+
+    private class AddStudentAction extends AbstractAction {
+        private AddStudentAction() {
+            super("Ajouter un étudiant");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            reset(studentScrollMenu.getSelectedIndex());
+        }
+    }
+
+    private class RemoveStudentAction extends AbstractAction {
+        private RemoveStudentAction() {
+            super("Supprimer l'étudiant");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            reset(studentScrollMenu.getSelectedIndex());
         }
     }
 

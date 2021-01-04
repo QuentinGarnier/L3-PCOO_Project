@@ -32,7 +32,7 @@ public class Grade {
         this.code = newCode;
     }
 
-    public void setValue(float newValue) {
+    public void setValue(double newValue) {
         this.value = newValue;
     }
 

@@ -15,6 +15,11 @@ public class SimpleBlock extends Block {
         this.sClass = new SchoolClass(n, c, nb);
     }
 
+    public SimpleBlock(SchoolClass scl) {
+        super(scl.getName(), scl.getCode(), scl.getNbCredits());
+        this.sClass = scl;
+    }
+
     // Not very useful for simple blocks:
     public SchoolClass[] getClasses() {
         return new SchoolClass[]{this.getSClass()};
