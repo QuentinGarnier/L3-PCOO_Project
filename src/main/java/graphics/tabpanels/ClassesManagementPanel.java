@@ -4,6 +4,7 @@ import program.Program;
 import teachingunit.SchoolClass;
 import teachingunit.block.Block;
 import teachingunit.block.SimpleBlock;
+import xmlreader.XMLReader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,9 +71,9 @@ public class ClassesManagementPanel extends CustomTabPanel {
         this.add(scroll, BorderLayout.CENTER);
     }
 
-    private void reset() {
+    private void reset(ArrayList<Program> ps) {
         removeAll();
-        create(programs);
+        create(ps);
     }
 
     /**
@@ -117,13 +118,14 @@ public class ClassesManagementPanel extends CustomTabPanel {
                 }
                 else {
                     if(programNotClass) {
-                        programs.add(new Program(nameField.getText(), codeField.getText()));
-                        // data.addProgram(new Program(...));//à modifier quand xmlreader prêt
+                        XMLReader.addProgram(new Program(nameField.getText(), codeField.getText()));
                     } else {
                         int credits = (Integer) creditsField.getValue();
-                        programs.get(programsList.getSelectedIndex()).addClass(new SchoolClass(nameField.getText(), codeField.getText(), credits));
+                        SchoolClass course = new SchoolClass(nameField.getText(), codeField.getText(), credits);
+                        XMLReader.addCourse(course);
+                        programs.get(programsList.getSelectedIndex()).addClass(course);
                     }
-                    reset();
+                    reset(XMLReader.getPrograms());
                 }
             }
         }

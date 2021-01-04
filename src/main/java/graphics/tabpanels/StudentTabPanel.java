@@ -8,6 +8,7 @@ import teachingunit.SchoolClass;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 /**
  * Class: JPanel Tab for a specific student
@@ -15,7 +16,7 @@ import java.awt.event.ActionEvent;
  */
 
 public class StudentTabPanel extends CustomTabPanel {
-    private Student[] students;
+    private ArrayList<Student> students;
     private SchoolClass[] schoolClasses;
     private StudentTableModel tableModel;
     private JTable tab;
@@ -27,28 +28,28 @@ public class StudentTabPanel extends CustomTabPanel {
      * @param stds: a list of all students
      * @param sclClasses: a list of all existing classes (read from XMLReader) to get the classes' names
      */
-    public StudentTabPanel(Student[] stds, SchoolClass[] sclClasses) {
-        this(stds, sclClasses, -1); //-1 : par défaut, pas d'étudiant sélectionné
+    public StudentTabPanel(ArrayList<Student> stds, ArrayList<SchoolClass> sclClasses) {
+        this(stds, sclClasses.toArray(new SchoolClass[0]), -1); //-1 : par défaut, pas d'étudiant sélectionné
     }
 
-    private StudentTabPanel(Student[] stds, SchoolClass[] sclClasses, int index) {
+    private StudentTabPanel(ArrayList<Student> stds, SchoolClass[] sclClasses, int index) {
         super(new BorderLayout());
         create(stds, sclClasses, index);
     }
 
-    private void create(Student[] stds, SchoolClass[] sclClasses, int index) {
+    private void create(ArrayList<Student> stds, SchoolClass[] sclClasses, int index) {
         this.currentStudentIndex = index;
         this.students = stds;
         this.schoolClasses = sclClasses;
-        this.tableModel = new StudentTableModel((index < 0? null: stds[index]), sclClasses);
+        this.tableModel = new StudentTableModel((index < 0? null: stds.get(index)), sclClasses);
 
         //TITLE & LIST (HEADER):
-        studentScrollMenu = new JComboBox(stds);
+        studentScrollMenu = new JComboBox(stds.toArray(new Student[0]));
         studentScrollMenu.setSelectedIndex(index); //par défaut -1 donc aucune sélection
         studentScrollMenu.addActionListener(new ScrollMenu());
 
         if(index < 0) title("Sélectionnez un étudiant dans la liste : ", studentScrollMenu);
-        else title("[" + stds[index].getId() + "] " + stds[index] + " ", studentScrollMenu);
+        else title("[" + stds.get(index).getId() + "] " + stds.get(index) + " ", studentScrollMenu);
 
         //BODY (ARRAY & UP BUTTONS):
         JPanel body = new JPanel(new BorderLayout());

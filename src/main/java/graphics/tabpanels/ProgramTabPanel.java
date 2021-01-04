@@ -26,8 +26,8 @@ public class ProgramTabPanel extends CustomTabPanel {
      * @param prgs: a list of programs
      * @param stds: a list of all students to get their data
      */
-    public ProgramTabPanel(ArrayList<Program> prgs, Student[] stds) {
-        this(prgs.toArray(new Program[0]), stds, 0);
+    public ProgramTabPanel(ArrayList<Program> prgs, ArrayList<Student> stds) {
+        this(prgs.toArray(new Program[0]), stds.toArray(new Student[0]), 0);
     }
 
     private ProgramTabPanel(Program[] prgs, Student[] stds, int defaultIndex) {

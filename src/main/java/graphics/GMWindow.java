@@ -1,9 +1,6 @@
 package graphics;
 
 import graphics.tabpanels.*;
-import program.Program;
-import student.Student;
-import teachingunit.SchoolClass;
 import xmlreader.XMLReader;
 
 import javax.swing.*;
@@ -11,7 +8,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 /**
  * Class: GradesManagement Window (GMWindow)
@@ -19,23 +15,18 @@ import java.util.ArrayList;
  */
 
 public class GMWindow extends JFrame {
-    private XMLReader data;
 
-    //parametres = XMLReader uniquement ! à modifier quand xmlreader fini
-    public GMWindow(Program[] psArray, Student[] stds, SchoolClass[] schoolClasses) {
+    public GMWindow() {
         super();
         setup();
-        //this.data = xmlReader;
-        ArrayList<Program> ps = new ArrayList<Program>(); //à supprimer quand XMLReader prêt !
-        for(Program p : psArray) ps.add(p);
 
         //Barre de menu en haut :
         menu();
 
         //Différentes pages (onglets) :
-        ProgramTabPanel programTabPanel = new ProgramTabPanel(ps, stds);
-        StudentTabPanel studentTabPanel = new StudentTabPanel(stds, schoolClasses);
-        ClassesManagementPanel classesManagementPanel = new ClassesManagementPanel(ps);
+        ProgramTabPanel programTabPanel = new ProgramTabPanel(XMLReader.getPrograms(), XMLReader.getStudents());
+        StudentTabPanel studentTabPanel = new StudentTabPanel(XMLReader.getStudents(), XMLReader.getSchoolClasses());
+        ClassesManagementPanel classesManagementPanel = new ClassesManagementPanel(XMLReader.getPrograms());
 
         //Gestion des onglets :
         JTabbedPane tabs = new JTabbedPane(); //tabs regroupe tous les onglets

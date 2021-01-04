@@ -11,13 +11,10 @@ import xmlreader.XMLReader;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("HelloWorld!");
-
-        XMLReader.read("data/data.xml", "student");
-
+        XMLReader.read("data/data.xml");
 
         // Tests temporaires des classes :
-
+/*
         Student emma = new Student(21604250, "Emma", "Kitty");
         Student george = new Student(21602987, "George", "Arys");
         Student michel = new Student(21602987, "Michel", "Miche");
@@ -61,8 +58,8 @@ public class Main {
         lesCours[2] = al.getSClass();
         lesCours[3] = cryptoOuArchit.getClasses()[0];
         lesCours[4] = cryptoOuArchit.getClasses()[1];
-
-        GMWindow gmWindow = new GMWindow(pList, stdList, lesCours); //à modifier quand elles auront push la classe XMLReader
+*/
+        GMWindow gmWindow = new GMWindow();
         gmWindow.display();
 
     }
