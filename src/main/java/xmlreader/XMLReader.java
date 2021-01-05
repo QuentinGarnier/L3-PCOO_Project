@@ -27,12 +27,13 @@ public class XMLReader {
     private static ArrayList<Program> programs = new ArrayList<Program>();
     private static ArrayList<Student> students = new ArrayList<Student>();
     private static ArrayList<SchoolClass> schoolClasses = new ArrayList<SchoolClass>();
+    private static String path = "";
 
 
-    public static void read(String path) {
+    public static void read(String readPath) {
         try {
-
-            File file = new File(path);
+            path = readPath;
+            File file = new File(readPath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file); // ouverture et lecture du fichier XML
@@ -149,6 +150,7 @@ public class XMLReader {
 
 
     public static void write() {
+        File file = new File(path);
         // to do !
     }
 
