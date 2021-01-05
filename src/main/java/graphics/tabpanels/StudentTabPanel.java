@@ -10,7 +10,6 @@ import xmlreader.XMLReader;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 /**
  * Class: JPanel Tab for a specific student
@@ -23,23 +22,18 @@ public class StudentTabPanel extends CustomTabPanel {
     private int currentStudentIndex;
     private JComboBox studentScrollMenu;
 
-    /**
-     * Constructor
-     * @param stds: a list of all students
-     * @param sclClasses: a list of all existing classes (read from XMLReader) to get the classes' names
-     */
-    public StudentTabPanel(ArrayList<Student> stds, ArrayList<SchoolClass> sclClasses) {
-        this(stds, sclClasses.toArray(new SchoolClass[0]), -1); //-1 : par défaut, pas d'étudiant sélectionné
+    public StudentTabPanel() {
+        this(-1); //-1 : par défaut, pas d'étudiant sélectionné
     }
 
-    private StudentTabPanel(ArrayList<Student> stds, SchoolClass[] sclClasses, int index) {
+    private StudentTabPanel(int index) {
         super(new BorderLayout());
-        create(stds, sclClasses, index);
+        create(index);
     }
 
-    private void create(ArrayList<Student> stds, SchoolClass[] sclClasses, int index) {
+    private void create(int index) {
         this.currentStudentIndex = index;
-        this.tableModel = new StudentTableModel((index < 0? null: stds.get(index)), sclClasses);
+        this.tableModel = new StudentTableModel((index < 0? null: XMLReader.getStudents().get(index)), XMLReader.getSchoolClasses());
 
         //TITLE & LIST (HEADER):
         studentScrollMenu = new JComboBox(XMLReader.getStudents().toArray(new Student[0]));
@@ -47,7 +41,7 @@ public class StudentTabPanel extends CustomTabPanel {
         studentScrollMenu.addActionListener(new ScrollMenu());
 
         if(index < 0) title("Sélectionnez un étudiant dans la liste : ", studentScrollMenu);
-        else title("[" + stds.get(index).getId() + "] " + stds.get(index) + " ", studentScrollMenu);
+        else title("[" + XMLReader.getStudents().get(index).getId() + "] " + XMLReader.getStudents().get(index) + " ", studentScrollMenu);
 
         //BODY (ARRAY & UP BUTTONS):
         JPanel body = new JPanel(new BorderLayout());
@@ -80,7 +74,7 @@ public class StudentTabPanel extends CustomTabPanel {
 
     private void reset(int index) {
         removeAll();
-        create(XMLReader.getStudents(), XMLReader.getSchoolClasses().toArray(new SchoolClass[0]), index);
+        create(index);
     }
 
     /**

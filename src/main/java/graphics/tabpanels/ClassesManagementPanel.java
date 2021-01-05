@@ -17,25 +17,19 @@ import java.util.ArrayList;
  */
 
 public class ClassesManagementPanel extends CustomTabPanel {
-    private ArrayList<Program> programs;
 
-    /**
-     * Constructor
-     * @param prgs: a list of all programs.
-     */
-    public ClassesManagementPanel(ArrayList<Program> prgs) {
+    public ClassesManagementPanel() {
         super(new BorderLayout());
-        create(prgs);
+        create();
     }
 
-    private void create(ArrayList<Program> prgs) {
-        this.programs = prgs;
+    private void create() {
 
         //TITLE:
         title("Structure des programmes");
 
         //BODY:
-        createHierarchy(prgs);
+        createHierarchy(XMLReader.getPrograms());
 
         //BUTTONS:
         JButton buttonAddProg = new JButton(new AddProgram());
@@ -73,7 +67,7 @@ public class ClassesManagementPanel extends CustomTabPanel {
 
     private void reset() {
         removeAll();
-        create(XMLReader.getPrograms());
+        create();
     }
 
     /**
@@ -95,7 +89,7 @@ public class ClassesManagementPanel extends CustomTabPanel {
         JLabel textCredits = new JLabel("Nombre de crédits :");
         JSpinner creditsField = new JSpinner(new SpinnerNumberModel(0,0,100,1));
         JLabel progListLabel = new JLabel("Programme associé :");
-        JComboBox programsList = new JComboBox(programs.toArray(new Program[0]));
+        JComboBox programsList = new JComboBox(XMLReader.getPrograms().toArray(new Program[0]));
         if(!programNotClass) {
             popup.add(textCredits);
             popup.add(creditsField);
@@ -123,7 +117,7 @@ public class ClassesManagementPanel extends CustomTabPanel {
                         int credits = (Integer) creditsField.getValue();
                         SchoolClass course = new SchoolClass(nameField.getText(), codeField.getText(), credits);
                         XMLReader.addCourse(course);
-                        programs.get(programsList.getSelectedIndex()).addClass(course);
+                        XMLReader.getPrograms().get(programsList.getSelectedIndex()).addClass(course);
                     }
                     reset();
                 }

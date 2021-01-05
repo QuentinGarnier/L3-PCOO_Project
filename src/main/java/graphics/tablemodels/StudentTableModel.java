@@ -18,7 +18,7 @@ public class StudentTableModel extends AbstractTableModel {
     private ArrayList<SchoolClass> schoolClasses = new ArrayList<SchoolClass>(); //liste associée à grades
     private Student student;
 
-    public StudentTableModel(Student stud, SchoolClass[] sclClasses) {
+    public StudentTableModel(Student stud, ArrayList<SchoolClass> sclClasses) {
         super();
         this.student = stud;
 
@@ -72,13 +72,13 @@ public class StudentTableModel extends AbstractTableModel {
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    private void setup(SchoolClass[] sclClasses) {
+    private void setup(ArrayList<SchoolClass> sclClasses) {
         for(Grade g : this.grades) {
             addSchoolClassToGrade(g, sclClasses);
         }
     }
 
-    private void addSchoolClassToGrade(Grade g, SchoolClass[] sclClasses) {
+    private void addSchoolClassToGrade(Grade g, ArrayList<SchoolClass> sclClasses) {
         boolean found = false;
         for(SchoolClass sc : sclClasses) if(g.getCode().equals(sc.getCode())) {
             schoolClasses.add(sc);

@@ -4,11 +4,11 @@ import graphics.tablemodels.ProgramTableModel;
 import minutes.Minutes;
 import program.Program;
 import student.Student;
+import xmlreader.XMLReader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 /**
  * Class: JPanel Tab for a specific program
@@ -16,40 +16,31 @@ import java.util.ArrayList;
  */
 
 public class ProgramTabPanel extends CustomTabPanel {
-    private Program[] programs;
     private int currentProgramIndex;
-    private Student[] students;
     private JComboBox programsList;
 
-    /**
-     * Constructor
-     * @param prgs: a list of programs
-     * @param stds: a list of all students to get their data
-     */
-    public ProgramTabPanel(ArrayList<Program> prgs, ArrayList<Student> stds) {
-        this(prgs.toArray(new Program[0]), stds.toArray(new Student[0]), 0);
+    public ProgramTabPanel() {
+        this(0);
     }
 
-    private ProgramTabPanel(Program[] prgs, Student[] stds, int defaultIndex) {
+    private ProgramTabPanel(int defaultIndex) {
         super(new BorderLayout());
-        create(prgs, stds, defaultIndex);
+        create(defaultIndex);
     }
 
-    private void create(Program[] prgs, Student[] stds, int defaultIndex) {
-        this.programs = prgs;
-        this.students = stds;
+    private void create(int defaultIndex) {
         this.currentProgramIndex = defaultIndex; //par défaut
-        ProgramTableModel tableModel = new ProgramTableModel(programs[currentProgramIndex], this.students);
+        ProgramTableModel tableModel = new ProgramTableModel(XMLReader.getPrograms().get(currentProgramIndex), XMLReader.getStudents().toArray(new Student[0]));
 
         //TITLE:
-        title("Programme : " + programs[currentProgramIndex].getName());
+        title("Programme : " + XMLReader.getPrograms().get(currentProgramIndex).getName());
 
         //ARRAY:
         JTable tab = new JTable(tableModel);
         this.add(createTable(tab, true), BorderLayout.CENTER);
 
         //PROGRAMS LIST:
-        programsList = new JComboBox(programs);
+        programsList = new JComboBox(XMLReader.getPrograms().toArray(new Program[0]));
         programsList.setSelectedIndex(defaultIndex);
         programsList.addActionListener(new ScrollMenu());
         JLabel comboBoxLabel = new JLabel("Séléctionner un programme : ");
@@ -64,7 +55,7 @@ public class ProgramTabPanel extends CustomTabPanel {
 
     private void reset(int index) {
         removeAll();
-        create(programs, students, index);
+        create(index);
     }
 
     private class ExportAction extends AbstractAction {
@@ -73,7 +64,7 @@ public class ProgramTabPanel extends CustomTabPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            Minutes.create(programs[currentProgramIndex], students);
+            Minutes.create(XMLReader.getPrograms().get(currentProgramIndex), XMLReader.getStudents().toArray(new Student[0]));
             JOptionPane.showMessageDialog(null, "Exportation terminée !", "Successful export!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
