@@ -13,6 +13,5 @@ public class Main {
 
         GMWindow gmWindow = new GMWindow();
         gmWindow.display();
-
     }
 }

@@ -172,6 +172,10 @@ public class XMLReader {
         schoolClasses.add(c);
     }
 
+    public static void removeStudent(int index) {
+        students.remove(index);
+    }
+
 
     private static List<Element> getChildren(Element item, String name) {
         NodeList nodeList = item.getChildNodes();

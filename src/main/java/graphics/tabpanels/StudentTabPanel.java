@@ -1,9 +1,11 @@
 package graphics.tabpanels;
 
 import graphics.tablemodels.StudentTableModel;
+import program.Program;
 import student.Student;
 import teachingunit.Grade;
 import teachingunit.SchoolClass;
+import xmlreader.XMLReader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +18,6 @@ import java.util.ArrayList;
  */
 
 public class StudentTabPanel extends CustomTabPanel {
-    private ArrayList<Student> students;
-    private SchoolClass[] schoolClasses;
     private StudentTableModel tableModel;
     private JTable tab;
     private int currentStudentIndex;
@@ -39,12 +39,10 @@ public class StudentTabPanel extends CustomTabPanel {
 
     private void create(ArrayList<Student> stds, SchoolClass[] sclClasses, int index) {
         this.currentStudentIndex = index;
-        this.students = stds;
-        this.schoolClasses = sclClasses;
         this.tableModel = new StudentTableModel((index < 0? null: stds.get(index)), sclClasses);
 
         //TITLE & LIST (HEADER):
-        studentScrollMenu = new JComboBox(stds.toArray(new Student[0]));
+        studentScrollMenu = new JComboBox(XMLReader.getStudents().toArray(new Student[0]));
         studentScrollMenu.setSelectedIndex(index); //par défaut -1 donc aucune sélection
         studentScrollMenu.addActionListener(new ScrollMenu());
 
@@ -82,7 +80,7 @@ public class StudentTabPanel extends CustomTabPanel {
 
     private void reset(int index) {
         removeAll();
-        create(students, schoolClasses, index);
+        create(XMLReader.getStudents(), XMLReader.getSchoolClasses().toArray(new SchoolClass[0]), index);
     }
 
     /**
@@ -93,7 +91,7 @@ public class StudentTabPanel extends CustomTabPanel {
         JPanel popup = new JPanel(new GridLayout(0, 1));
         JLabel text = new JLabel(addNotModify ? "Entrez une nouvelle note :" : "Modifier la note sélectionnée :");
         JTextField nbField = new JTextField();
-        JComboBox classesList = new JComboBox(schoolClasses);
+        JComboBox classesList = new JComboBox(XMLReader.getSchoolClasses().toArray(new SchoolClass[0]));
         JCheckBox checkBox = new JCheckBox("ABI");
         popup.add(text);
         popup.add(nbField);
@@ -109,7 +107,7 @@ public class StudentTabPanel extends CustomTabPanel {
                 double nb = Double.parseDouble(nbStr);
                 if (nb < 0 || nb > 20) errorInputPopup();
                 else {
-                    SchoolClass cl = schoolClasses[classesList.getSelectedIndex()];
+                    SchoolClass cl = XMLReader.getSchoolClasses().get(classesList.getSelectedIndex());
                     if (addNotModify) tableModel.addGrade(new Grade((checkBox.isSelected() ? -1 : nb), cl.getCode()), cl);
                     else tableModel.modifyGrade(tab.getSelectedRow(), nb, checkBox.isSelected());
                 }
@@ -125,6 +123,68 @@ public class StudentTabPanel extends CustomTabPanel {
                 "Error: not a number", JOptionPane.WARNING_MESSAGE);
     }
 
+    private void addStudentPopup() {
+        JPanel popup = new JPanel(new GridLayout(0, 1));
+        JLabel firstnameLabel = new JLabel("Prénom :");
+        JTextField firstnameField = new JTextField();
+        JLabel nameLabel = new JLabel("Nom :");
+        JTextField nameField = new JTextField();
+        JLabel idLabel = new JLabel("Numéro étudiant :");
+        JTextField idField = new JTextField();
+        JLabel programLabel = new JLabel("Programme (laissez vide si aucun) :");
+        JComboBox programsList = new JComboBox(XMLReader.getPrograms().toArray(new Program[0]));
+        programsList.setSelectedIndex(-1); //par défaut aucun programme sélectionné
+        popup.add(firstnameLabel);
+        popup.add(firstnameField);
+        popup.add(nameLabel);
+        popup.add(nameField);
+        popup.add(idLabel);
+        popup.add(idField);
+        popup.add(programLabel);
+        popup.add(programsList);
+        int result = JOptionPane.showConfirmDialog(null, popup,"Add student",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                if (firstnameField.getText().length() == 0 || nameField.getText().length() == 0)
+                    JOptionPane.showMessageDialog(null,
+                        "Erreur : un des champs requis est vide.",
+                        "Error: missing fields", JOptionPane.WARNING_MESSAGE);
+                else {
+                    Student student = new Student(id, firstnameField.getText(), nameField.getText());
+                    int i = programsList.getSelectedIndex();
+                    if(i > -1) student.setProgram(XMLReader.getPrograms().get(i));
+                    XMLReader.addStudent(student);
+                    reset(currentStudentIndex);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Erreur : numéro étudiant incorrect.",
+                        "Error: not a number", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
+    private void removeStudentPopup() {
+        if (currentStudentIndex < 0)
+            JOptionPane.showMessageDialog(null,
+                    "Vous devez d'abord sélectionner un étudiant.",
+                    "No student selected", JOptionPane.WARNING_MESSAGE);
+        else {
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "ATTENTION : l'action est définitive. Souhaitez-vous continuer ?",
+                    "Confirm deletion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (confirm == JOptionPane.OK_OPTION) {
+                XMLReader.removeStudent(currentStudentIndex);
+                JOptionPane.showMessageDialog(null,
+                        "L'étudiant à été supprimé.",
+                        "Deletion success", JOptionPane.INFORMATION_MESSAGE);
+                reset(-1);
+            }
+        }
+    }
+
 
 
     private class AddAction extends AbstractAction {
@@ -133,7 +193,7 @@ public class StudentTabPanel extends CustomTabPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            if(currentStudentIndex < 0) JOptionPane.showMessageDialog(null, "Veuillez choisir un étudiant avant de lui ajouter une note.", "No student selected!", JOptionPane.WARNING_MESSAGE);
+            if(currentStudentIndex < 0) JOptionPane.showMessageDialog(null, "Veuillez choisir un étudiant avant de lui ajouter une note.", "No student selected", JOptionPane.WARNING_MESSAGE);
             else addGradePopup();
         }
 
@@ -192,6 +252,7 @@ public class StudentTabPanel extends CustomTabPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
+            addStudentPopup();
             reset(studentScrollMenu.getSelectedIndex());
         }
     }
@@ -202,6 +263,7 @@ public class StudentTabPanel extends CustomTabPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
+            removeStudentPopup();
             reset(studentScrollMenu.getSelectedIndex());
         }
     }

@@ -71,9 +71,9 @@ public class ClassesManagementPanel extends CustomTabPanel {
         this.add(scroll, BorderLayout.CENTER);
     }
 
-    private void reset(ArrayList<Program> ps) {
+    private void reset() {
         removeAll();
-        create(ps);
+        create(XMLReader.getPrograms());
     }
 
     /**
@@ -109,7 +109,7 @@ public class ClassesManagementPanel extends CustomTabPanel {
         if (result == JOptionPane.OK_OPTION) {
             int confirm = JOptionPane.showConfirmDialog(null,
                     "ATTENTION : vous ne pourrez pas supprimer le " + progOrClass + " créé. Souhaitez-vous continuer ?",
-                    "Confirm creation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                    "Confirm creation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (confirm == JOptionPane.OK_OPTION) {
                 if (nameField.getText().length() == 0 || codeField.getText().length() == 0) {
                     JOptionPane.showMessageDialog(null,
@@ -125,7 +125,7 @@ public class ClassesManagementPanel extends CustomTabPanel {
                         XMLReader.addCourse(course);
                         programs.get(programsList.getSelectedIndex()).addClass(course);
                     }
-                    reset(XMLReader.getPrograms());
+                    reset();
                 }
             }
         }
