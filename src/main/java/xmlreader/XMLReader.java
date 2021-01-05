@@ -148,6 +148,11 @@ public class XMLReader {
     }
 
 
+    public static void write() {
+        // to do !
+    }
+
+
     public static ArrayList<Program> getPrograms() {
         return programs;
     }
