@@ -9,9 +9,10 @@ import xmlreader.XMLReader;
 
 public class Main {
     public static void main(String[] args) {
-        XMLReader.read("data/data.xml");
+        if(args.length == 0) XMLReader.read("data/data.xml"); //Chemin de lecture par défaut (sans paramètre)
+        else XMLReader.read(args[0]); //Chemin de lecture personnalisé (premier paramètre)
 
-        GMWindow gmWindow = new GMWindow();
-        gmWindow.display();
+        GMWindow gmWindow = new GMWindow(); //Création de la fenêtre graphique de l'application
+        gmWindow.display(); //Affichage de la fenêtre graphique
     }
 }
