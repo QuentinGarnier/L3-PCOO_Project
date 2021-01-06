@@ -8,6 +8,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Class: GradesManagement Window (GMWindow)
@@ -48,7 +50,40 @@ public class GMWindow extends JFrame {
         setMinimumSize(new Dimension(800,600));
         setLocationRelativeTo(null);
         setResizable(true); //true à l'avenir en adaptant les éléments à la taille de la fenêtre
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //Save before quit method:
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                saveBeforeQuitPopup();
+            }
+        });
+    }
+
+    private void saveBeforeQuitPopup() {
+        if (XMLReader.hasChanged()) {
+            Object[] options = {"Enregistrer", "Ne pas enregistrer", "Annuler"};
+            int result = JOptionPane.showOptionDialog(this,
+                    "Voulez-vous enregistrer les modifications effectuées avant de quitter ?",
+                    "Save changes?",
+                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+            switch (result) {
+                case JOptionPane.YES_OPTION:
+                    XMLReader.write();
+                    System.exit(0);
+                    break;
+
+                case JOptionPane.NO_OPTION:
+                    System.exit(0);
+                    break;
+
+                case JOptionPane.CANCEL_OPTION:
+                    break;
+            }
+
+        }
+        else System.exit(0);
     }
 
     private void menu() {

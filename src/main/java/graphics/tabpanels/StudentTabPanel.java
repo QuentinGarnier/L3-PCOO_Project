@@ -104,6 +104,7 @@ public class StudentTabPanel extends CustomTabPanel {
                     SchoolClass cl = XMLReader.getSchoolClasses().get(classesList.getSelectedIndex());
                     if (addNotModify) tableModel.addGrade(new Grade((checkBox.isSelected() ? -1 : nb), cl.getCode()), cl);
                     else tableModel.modifyGrade(tab.getSelectedRow(), nb, checkBox.isSelected());
+                    XMLReader.setChanges(true);
                 }
             } catch (NumberFormatException e) {
                 errorInputPopup();
@@ -150,7 +151,7 @@ public class StudentTabPanel extends CustomTabPanel {
                     int i = programsList.getSelectedIndex();
                     if(i > -1) student.setProgram(XMLReader.getPrograms().get(i));
                     XMLReader.addStudent(student);
-                    reset(currentStudentIndex);
+                    reset(studentScrollMenu.getItemCount());
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null,
@@ -158,7 +159,6 @@ public class StudentTabPanel extends CustomTabPanel {
                         "Error: not a number", JOptionPane.WARNING_MESSAGE);
             }
         }
-        reset(result == JOptionPane.OK_OPTION? studentScrollMenu.getItemCount() - 1: studentScrollMenu.getSelectedIndex());
     }
 
     private void removeStudentPopup() {
@@ -190,11 +190,7 @@ public class StudentTabPanel extends CustomTabPanel {
 
         public void actionPerformed(ActionEvent e) {
             if(currentStudentIndex < 0) JOptionPane.showMessageDialog(null, "Veuillez choisir un étudiant avant de lui ajouter une note.", "No student selected", JOptionPane.WARNING_MESSAGE);
-            else addGradePopup();
-        }
-
-        private void addGradePopup() {
-            createPopup(true);
+            else createPopup(true);
         }
     }
 
@@ -211,11 +207,7 @@ public class StudentTabPanel extends CustomTabPanel {
             else if(tab.getSelectedRows().length > 1) JOptionPane.showMessageDialog(null,
                     "Vous ne pouvez pas modifier plusieurs notes en même temps.",
                     "Too many grades selected!", JOptionPane.WARNING_MESSAGE);
-            else modifyGradePopup();
-        }
-
-        private void modifyGradePopup() {
-            createPopup(false);
+            else createPopup(false);
         }
     }
 
@@ -234,9 +226,10 @@ public class StudentTabPanel extends CustomTabPanel {
                         "Vous allez supprimer les lignes sélectionnées. Voulez-vous continuer ?",
                         "Confirm deletion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
                         null, options, options[1]);
-                if (o == 0) {
+                if (o == JOptionPane.YES_OPTION) {
                     int[] selection = tab.getSelectedRows();
                     for (int i = selection.length - 1; i >= 0; i--) tableModel.removeGrade(selection[i]);
+                    XMLReader.setChanges(true);
                 }
             }
         }

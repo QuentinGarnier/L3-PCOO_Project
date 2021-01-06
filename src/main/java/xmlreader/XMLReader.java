@@ -31,7 +31,7 @@ public class XMLReader {
     private static ArrayList<Student> students = new ArrayList<Student>();
     private static ArrayList<SchoolClass> schoolClasses = new ArrayList<SchoolClass>();
     private static String path = "";
-
+    private static boolean changes = false;
 
     public static void read(String readPath) {
         try {
@@ -163,6 +163,7 @@ public class XMLReader {
             printFooter(writer);
 
             writer.close();
+            changes = false;
         } catch(IOException e) {
             System.err.println("Error: failed to create the file properly.");
         }
@@ -240,19 +241,31 @@ public class XMLReader {
     }
 
     public static void addProgram(Program p) {
+        changes = true;
         programs.add(p);
     }
 
     public static void addStudent(Student s) {
+        changes = true;
         students.add(s);
     }
 
     public static void addCourse(SchoolClass c) {
+        changes = true;
         schoolClasses.add(c);
     }
 
     public static void removeStudent(int index) {
+        changes = true;
         students.remove(index);
+    }
+
+    public static boolean hasChanged() {
+        return changes;
+    }
+
+    public static void setChanges(boolean c) {
+        changes = c;
     }
 
 
