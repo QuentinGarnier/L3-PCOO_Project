@@ -62,7 +62,7 @@ public class GMWindow extends JFrame {
 
     private void saveBeforeQuitPopup() {
         if (XMLReader.hasChanged()) {
-            Object[] options = {"Enregistrer", "Ne pas enregistrer", "Annuler"};
+            String[] options = {"Enregistrer", "Ne pas enregistrer", "Annuler"};
             int result = JOptionPane.showOptionDialog(this,
                     "Voulez-vous enregistrer les modifications effectuées avant de quitter ?",
                     "Save changes?",

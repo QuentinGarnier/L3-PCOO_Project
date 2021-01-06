@@ -221,7 +221,7 @@ public class StudentTabPanel extends CustomTabPanel {
                     "Vous ne pouvez pas supprimer une note sans avoir sélectionné un étudiant.",
                     "No student selected!", JOptionPane.WARNING_MESSAGE);
             else {
-                Object[] options = {"Supprimer", "Annuler"};
+                String[] options = {"Supprimer", "Annuler"};
                 int o = JOptionPane.showOptionDialog(null,
                         "Vous allez supprimer les lignes sélectionnées. Voulez-vous continuer ?",
                         "Confirm deletion", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
