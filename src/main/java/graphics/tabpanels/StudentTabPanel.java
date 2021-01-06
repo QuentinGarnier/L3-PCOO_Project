@@ -247,7 +247,7 @@ public class StudentTabPanel extends CustomTabPanel {
 
         public void actionPerformed(ActionEvent e) {
             addStudentPopup();
-            reset(studentScrollMenu.getSelectedIndex());
+            reset(studentScrollMenu.getItemCount() - 1);
         }
     }
 
@@ -257,8 +257,9 @@ public class StudentTabPanel extends CustomTabPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
+            int index = studentScrollMenu.getSelectedIndex();
             removeStudentPopup();
-            reset(studentScrollMenu.getSelectedIndex());
+            reset(index -1 < 0? 0: index - 1);
         }
     }
 

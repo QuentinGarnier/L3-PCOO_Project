@@ -13,6 +13,8 @@ import teachingunit.block.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,8 +124,8 @@ public class XMLReader {
                         for (Element eElement : rootChildren) {
 
                             int id = Integer.parseInt(eElement.getElementsByTagName("identifier").item(0).getTextContent());
-                            String firstname = eElement.getElementsByTagName("name").item(0).getTextContent();
-                            String name = eElement.getElementsByTagName("surname").item(0).getTextContent();
+                            String firstname = eElement.getElementsByTagName("surname").item(0).getTextContent();
+                            String name = eElement.getElementsByTagName("name").item(0).getTextContent();
                             String prog = eElement.getElementsByTagName("program").item(0).getTextContent();
                             Student std = new Student(id, firstname, name);
 
@@ -151,8 +153,77 @@ public class XMLReader {
 
 
     public static void write() {
-        File file = new File(path);
-        // to do !
+        try {
+            PrintWriter writer = new PrintWriter(path);
+
+            printHeader(writer);
+            printCourses(writer);
+            printPrograms(writer);
+            printStudents(writer);
+            printFooter(writer);
+
+            writer.close();
+        } catch(IOException e) {
+            System.err.println("Error: failed to create the file properly.");
+        }
+    }
+
+    private static void printHeader(PrintWriter writer) {
+        writer.println("<?xml version=\"1.0\"?>");
+        writer.println("<data>");
+    }
+
+    private static void printFooter(PrintWriter writer) {
+        writer.print("</data>");
+    }
+
+    private static void printCourses(PrintWriter writer) {
+        for (SchoolClass scl : schoolClasses) {
+            writer.println("\t<course>");
+            writer.println("\t\t<identifier>" + scl.getCode() + "</identifier>");
+            writer.println("\t\t<name>" + scl.getName() + "</name>");
+            writer.println("\t\t<credits>" + scl.getNbCredits() + "</credits>");
+            writer.println("\t</course>");
+            writer.println();
+        }
+    }
+
+    private static void printPrograms(PrintWriter writer) {
+        for (Program p : programs) {
+            writer.println("\t<program>");
+            writer.println("\t\t<identifier>" + p.getCode() + "</identifier>");
+            writer.println("\t\t<name>" + p.getName() + "</name>");
+            if (p.getBlocks() != null) for (Block b : p.getBlocks()) {
+                if (b instanceof SimpleBlock) writer.println("\t\t<item>" + b.getCode() + "</item>");
+                else {
+                    boolean options = b instanceof OptionsBlock;
+                    writer.println("\t\t<" + (options? "options": "composite") + ">");
+                    writer.println("\t\t\t<identifier>" + b.getCode() + "</identifier>");
+                    writer.println("\t\t\t<name>" + b.getName() + "</name>");
+                    for (SchoolClass s : b.getClasses()) writer.println("\t\t\t<item>" + s.getCode() + "</item>");
+                    writer.println("\t\t</" + (options? "options": "composite") + ">");
+                }
+            }
+            writer.println("\t</program>");
+            writer.println();
+        }
+    }
+
+    private static void printStudents(PrintWriter writer) {
+        for (Student stud : students) {
+            writer.println("\t<student>");
+            writer.println("\t\t<identifier>" + stud.getId() + "</identifier>");
+            writer.println("\t\t<name>" + stud.getName() + "</name>");
+            writer.println("\t\t<surname>" +stud.getFirstname() + "</surname>");
+            writer.println("\t\t<program>" + (stud.getProgram() == null? "": stud.getProgram()) + "</program>");
+            for (Grade g : stud.getGrades()) {
+                writer.println("\t\t<grade>");
+                writer.println("\t\t\t<item>" + g.getCode() + "</item>");
+                writer.println("\t\t\t<value>" + g + "</value>");
+                writer.println("\t\t</grade>");
+            }
+            writer.println("\t</student>");
+        }
     }
 
 
