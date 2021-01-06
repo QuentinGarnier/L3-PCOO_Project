@@ -59,10 +59,6 @@ public class ProgramTabPanel extends CustomTabPanel {
         create(index);
     }
 
-    public int getCurrentProgramIndex() {
-        return currentProgramIndex;
-    }
-
     private class ExportAction extends AbstractAction {
         private ExportAction() {
             super("Exporter en CSV");

@@ -9,6 +9,9 @@ import java.awt.*;
  */
 
 abstract class CustomTabPanel extends JPanel {
+    Color buttonColor = new Color(60,100,140);
+    Color fgColor = new Color(230,230,230);
+
     CustomTabPanel(BorderLayout borderLayout) {
         super(borderLayout);
     }
@@ -43,8 +46,15 @@ abstract class CustomTabPanel extends JPanel {
     }
 
     void footer(Component... componentsToAdd) {
+        Color bgColor = new Color(80,80,80);
         JPanel footer = new JPanel();
-        if(componentsToAdd != null) for(Component c : componentsToAdd) footer.add(c);
+        footer.setBackground(bgColor);
+        if(componentsToAdd != null) for(Component c : componentsToAdd) {
+            c.setForeground(fgColor);
+            if (c instanceof JButton) c.setBackground(buttonColor);
+            else if (c instanceof JComboBox) c.setForeground(Color.BLACK);
+            footer.add(c);
+        }
         this.add(footer, BorderLayout.SOUTH);
     }
 

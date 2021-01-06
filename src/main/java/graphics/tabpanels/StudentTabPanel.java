@@ -50,9 +50,16 @@ public class StudentTabPanel extends CustomTabPanel {
         JButton buttonRemoveStudent = new JButton(new RemoveStudentAction());
         buttonRemoveStudent.setToolTipText("Supprimer l'étudiant sélectionné");
         JPanel buttonBar = new JPanel();
+        buttonAddStudent.setForeground(fgColor);
+        buttonAddStudent.setBackground(buttonColor);
         buttonBar.add(buttonAddStudent);
+
         buttonBar.add(new JLabel(" | "));
+
+        buttonRemoveStudent.setForeground(fgColor);
+        buttonRemoveStudent.setBackground(buttonColor);
         buttonBar.add(buttonRemoveStudent);
+
         buttonBar.setBackground(new Color(220,220,220));
         body.add(buttonBar, BorderLayout.NORTH);
 
