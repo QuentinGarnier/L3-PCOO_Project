@@ -158,6 +158,7 @@ public class StudentTabPanel extends CustomTabPanel {
                         "Error: not a number", JOptionPane.WARNING_MESSAGE);
             }
         }
+        reset(result == JOptionPane.OK_OPTION? studentScrollMenu.getItemCount() - 1: studentScrollMenu.getSelectedIndex());
     }
 
     private void removeStudentPopup() {
@@ -166,6 +167,7 @@ public class StudentTabPanel extends CustomTabPanel {
                     "Vous devez d'abord sélectionner un étudiant.",
                     "No student selected", JOptionPane.WARNING_MESSAGE);
         else {
+            int index = studentScrollMenu.getSelectedIndex();
             int confirm = JOptionPane.showConfirmDialog(null,
                     "ATTENTION : l'action est définitive. Souhaitez-vous continuer ?",
                     "Confirm deletion", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -174,7 +176,7 @@ public class StudentTabPanel extends CustomTabPanel {
                 JOptionPane.showMessageDialog(null,
                         "L'étudiant à été supprimé.",
                         "Deletion success", JOptionPane.INFORMATION_MESSAGE);
-                reset(-1);
+                reset(index == studentScrollMenu.getItemCount() - 1? index - 1: index);
             }
         }
     }
@@ -247,7 +249,6 @@ public class StudentTabPanel extends CustomTabPanel {
 
         public void actionPerformed(ActionEvent e) {
             addStudentPopup();
-            reset(studentScrollMenu.getItemCount() - 1);
         }
     }
 
@@ -257,9 +258,7 @@ public class StudentTabPanel extends CustomTabPanel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            int index = studentScrollMenu.getSelectedIndex();
             removeStudentPopup();
-            reset(index -1 < 0? 0: index - 1);
         }
     }
 
