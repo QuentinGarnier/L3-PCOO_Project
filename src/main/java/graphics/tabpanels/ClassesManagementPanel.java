@@ -65,7 +65,8 @@ public class ClassesManagementPanel extends CustomTabPanel {
         this.add(scroll, BorderLayout.CENTER);
     }
 
-    private void reset() {
+    @Override
+    public void reset() {
         removeAll();
         create();
     }

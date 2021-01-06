@@ -47,4 +47,6 @@ abstract class CustomTabPanel extends JPanel {
         if(componentsToAdd != null) for(Component c : componentsToAdd) footer.add(c);
         this.add(footer, BorderLayout.SOUTH);
     }
+
+    public abstract void reset();
 }

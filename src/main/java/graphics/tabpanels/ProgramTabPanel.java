@@ -20,12 +20,8 @@ public class ProgramTabPanel extends CustomTabPanel {
     private JComboBox programsList;
 
     public ProgramTabPanel() {
-        this(0);
-    }
-
-    private ProgramTabPanel(int defaultIndex) {
         super(new BorderLayout());
-        create(defaultIndex);
+        create(0);
     }
 
     private void create(int defaultIndex) {
@@ -53,9 +49,18 @@ public class ProgramTabPanel extends CustomTabPanel {
         footer(comboBoxLabel, programsList, new JLabel("  |  "), buttonExport);
     }
 
+    @Override
+    public void reset() {
+        reset(currentProgramIndex);
+    }
+
     private void reset(int index) {
         removeAll();
         create(index);
+    }
+
+    public int getCurrentProgramIndex() {
+        return currentProgramIndex;
     }
 
     private class ExportAction extends AbstractAction {

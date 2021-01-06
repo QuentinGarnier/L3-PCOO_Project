@@ -72,6 +72,11 @@ public class StudentTabPanel extends CustomTabPanel {
         footer(buttonAdd, buttonModify, buttonRemove);
     }
 
+    @Override
+    public  void reset() {
+        reset(currentStudentIndex);
+    }
+
     private void reset(int index) {
         removeAll();
         create(index);
@@ -103,7 +108,10 @@ public class StudentTabPanel extends CustomTabPanel {
                 else {
                     SchoolClass cl = XMLReader.getSchoolClasses().get(classesList.getSelectedIndex());
                     if (addNotModify) tableModel.addGrade(new Grade((checkBox.isSelected() ? -1 : nb), cl.getCode()), cl);
-                    else tableModel.modifyGrade(tab.getSelectedRow(), nb, checkBox.isSelected());
+                    else {
+                        tableModel.modifyGrade(tab.getSelectedRow(), nb, checkBox.isSelected());
+                        tab.repaint(); //Actualise instantanément les modifications (visuellement,dans le JTable)
+                    }
                     XMLReader.setChanges(true);
                 }
             } catch (NumberFormatException e) {

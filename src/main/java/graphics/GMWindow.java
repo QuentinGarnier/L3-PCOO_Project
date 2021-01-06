@@ -6,6 +6,8 @@ import xmlreader.XMLReader;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -29,16 +31,33 @@ public class GMWindow extends JFrame {
         menu();
 
         //Différentes pages (onglets) :
-        ProgramTabPanel programTabPanel = new ProgramTabPanel();
-        StudentTabPanel studentTabPanel = new StudentTabPanel();
-        ClassesManagementPanel classesManagementPanel = new ClassesManagementPanel();
+        final ProgramTabPanel programTabPanel = new ProgramTabPanel();
+        final StudentTabPanel studentTabPanel = new StudentTabPanel();
+        final ClassesManagementPanel classesManagementPanel = new ClassesManagementPanel();
 
         //Gestion des onglets :
-        JTabbedPane tabs = new JTabbedPane(); //tabs regroupe tous les onglets
+        final JTabbedPane tabs = new JTabbedPane(); //tabs regroupe tous les onglets
         tabs.setTabPlacement(JTabbedPane.TOP); //place la barre des onglets en haut
         tabs.addTab("Programmes", programTabPanel);
         tabs.addTab("Étudiants", studentTabPanel);
         tabs.addTab("Organisation des cours", classesManagementPanel);
+
+        //Permet de rafraîchir les onglets à chaque chargement pour actualiser les modifications :
+        tabs.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                switch(tabs.getSelectedIndex()) {
+                    case 0:
+                        programTabPanel.reset();
+                        break;
+                    case 1:
+                        studentTabPanel.reset();
+                        break;
+                    case 2:
+                        classesManagementPanel.reset();
+                        break;
+                }
+            }
+        });
 
         getContentPane().setBackground(new Color(80, 80, 80));
         getContentPane().add(tabs);
