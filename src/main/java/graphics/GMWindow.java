@@ -1,6 +1,7 @@
 package graphics;
 
 import graphics.tabpanels.*;
+import xmlreader.XMLReader;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,6 +15,9 @@ import java.awt.event.ActionEvent;
  */
 
 public class GMWindow extends JFrame {
+    private Color colorBG = new Color(80,80,80);
+    private Color colorFG = new Color(220,220,220);
+    private Border border = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 
     public GMWindow() {
         super();
@@ -48,10 +52,6 @@ public class GMWindow extends JFrame {
     }
 
     private void menu() {
-        Color colorBG = new Color(80,80,80);
-        Color colorFG = new Color(220,220,220);
-        Border border = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(colorBG);
         menuBar.setBorder(border);
@@ -60,16 +60,42 @@ public class GMWindow extends JFrame {
         menu1.setFont(new Font(menu1.getFont().getName(), Font.PLAIN, 16));
         menu1.setForeground(colorFG);
 
-        JMenuItem premier = new JMenuItem(new ActionExit());
-        premier.setBackground(colorBG);
-        premier.setForeground(colorFG);
-        premier.setFont(new Font(premier.getFont().getName(), Font.PLAIN, 16));
-        premier.setPreferredSize(new Dimension(200, 30));
-        premier.setBorder(border);
+        JMenuItem menuSave = setupJMenuItem(new ActionSave());
+        JMenuItem menuExit = setupJMenuItem(new ActionExit());
 
-        menu1.add(premier);
+        menu1.add(menuSave);
+        menu1.add(menuExit);
         menuBar.add(menu1);
         setJMenuBar(menuBar);
+    }
+
+    public void display() {
+        setVisible(true);
+    }
+
+    private void clear() {
+        getContentPane().removeAll();
+    }
+
+    private JMenuItem setupJMenuItem(AbstractAction action) {
+        JMenuItem jMenuItem = new JMenuItem(action);
+        jMenuItem.setBackground(colorBG);
+        jMenuItem.setForeground(colorFG);
+        jMenuItem.setFont(new Font(jMenuItem.getFont().getName(), Font.PLAIN, 16));
+        jMenuItem.setPreferredSize(new Dimension(200, 30));
+        jMenuItem.setBorder(border);
+        return jMenuItem;
+    }
+
+    private class ActionSave extends AbstractAction {
+        private ActionSave() {
+            super("Sauvegarder");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            XMLReader.write();
+            JOptionPane.showMessageDialog(null, "Sauvegarde terminée !", "Successful save", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private class ActionExit extends AbstractAction {
@@ -80,13 +106,5 @@ public class GMWindow extends JFrame {
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
-    }
-
-    public void display() {
-        setVisible(true);
-    }
-
-    private void clear() {
-        getContentPane().removeAll();
     }
 }
