@@ -20,6 +20,11 @@ public class SimpleBlock extends Block {
         this.sClass = scl;
     }
 
+    @Override
+    public void addClass(SchoolClass s) {
+        this.sClass = s;
+    }
+
     // Not very useful for simple blocks:
     public SchoolClass[] getClasses() {
         return new SchoolClass[]{this.getSClass()};

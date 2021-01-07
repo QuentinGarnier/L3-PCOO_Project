@@ -3,6 +3,8 @@ package teachingunit.block;
 import teachingunit.Grade;
 import teachingunit.SchoolClass;
 
+import java.util.ArrayList;
+
 /**
  * @author Quentin Garnier
  *          Léa Bloom
@@ -17,7 +19,7 @@ public class OptionsBlock extends Block {
     public OptionsBlock(String n, String c, SchoolClass[] classes, int nbc) {
         super(n, c, nbc);
         this.options = classes;
-        for(SchoolClass scs : this.options) scs.setNbCredits(nbc);
+        if(classes != null) for(SchoolClass scs : this.options) scs.setNbCredits(nbc);
     }
 
     public SchoolClass[] getClasses() {
@@ -25,7 +27,15 @@ public class OptionsBlock extends Block {
     }
 
     public int nbOfOptions() {
+        if (this.options == null) return 0;
         return this.options.length;
+    }
+
+    public void addClass(SchoolClass scl) {
+        ArrayList<SchoolClass> list = new ArrayList<SchoolClass>();
+        if(this.options != null) for(SchoolClass s: this.options) list.add(s);
+        list.add(scl);
+        this.options = list.toArray(new SchoolClass[0]);
     }
 
     public Grade getGrade(Grade[] grades) {
@@ -48,5 +58,11 @@ public class OptionsBlock extends Block {
         return null; //null si aucune note de grades ne correspond aux options du bloc
     }
 
-
+    @Override
+    public int getNbCredits() {
+        if(this.options == null) return 0;
+        int res = 0;
+        for (SchoolClass s: this.options) if(s.getNbCredits() > res) res = s.getNbCredits();
+        return res;
+    }
 }

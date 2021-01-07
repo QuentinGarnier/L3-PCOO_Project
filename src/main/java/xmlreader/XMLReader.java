@@ -79,7 +79,6 @@ public class XMLReader {
                                 String eCode = e.getTextContent();
                                 for (SchoolClass scl : schoolClasses)
                                     if (scl.getCode().equals(eCode)) blocks.add(new SimpleBlock(scl));
-                                ;
                             }
 
                             //Ajout des blocs à options :
@@ -88,12 +87,12 @@ public class XMLReader {
                                 String eName = e.getElementsByTagName("name").item(0).getTextContent();
                                 List<Element> eItems = getChildren(e, "item");
                                 ArrayList<SchoolClass> eCoursesList = new ArrayList<SchoolClass>();
-                                for (Element eItem : eItems) {
+                                if(eItems.size() > 0) for (Element eItem : eItems) {
                                     String eItemCode = eItem.getTextContent();
                                     for (SchoolClass scl : schoolClasses)
                                         if (scl.getCode().equals(eItemCode)) eCoursesList.add(scl);
                                 }
-                                int nbCredits = eCoursesList.get(0).getNbCredits();
+                                int nbCredits = (eCoursesList.size() == 0? 0: eCoursesList.get(0).getNbCredits());
                                 OptionsBlock newBlock = new OptionsBlock(eName, eCode, eCoursesList.toArray(new SchoolClass[0]), nbCredits);
                                 blocks.add(newBlock);
                             }
@@ -198,11 +197,11 @@ public class XMLReader {
                 if (b instanceof SimpleBlock) writer.println("\t\t<item>" + b.getCode() + "</item>");
                 else {
                     boolean options = b instanceof OptionsBlock;
-                    writer.println("\t\t<" + (options? "options": "composite") + ">");
+                    writer.println("\t\t<" + (options? "option": "composite") + ">");
                     writer.println("\t\t\t<identifier>" + b.getCode() + "</identifier>");
                     writer.println("\t\t\t<name>" + b.getName() + "</name>");
-                    for (SchoolClass s : b.getClasses()) writer.println("\t\t\t<item>" + s.getCode() + "</item>");
-                    writer.println("\t\t</" + (options? "options": "composite") + ">");
+                    if (b.getClasses() != null) for (SchoolClass s : b.getClasses()) writer.println("\t\t\t<item>" + s.getCode() + "</item>");
+                    writer.println("\t\t</" + (options? "option": "composite") + ">");
                 }
             }
             writer.println("\t</program>");
@@ -216,7 +215,7 @@ public class XMLReader {
             writer.println("\t\t<identifier>" + stud.getId() + "</identifier>");
             writer.println("\t\t<name>" + stud.getName() + "</name>");
             writer.println("\t\t<surname>" +stud.getFirstname() + "</surname>");
-            writer.println("\t\t<program>" + (stud.getProgram() == null? "": stud.getProgram()) + "</program>");
+            writer.println("\t\t<program>" + (stud.getProgram() == null? "": stud.getProgram().getCode()) + "</program>");
             for (Grade g : stud.getGrades()) {
                 writer.println("\t\t<grade>");
                 writer.println("\t\t\t<item>" + g.getCode() + "</item>");
@@ -243,6 +242,11 @@ public class XMLReader {
     public static void addProgram(Program p) {
         changes = true;
         programs.add(p);
+    }
+
+    public static void addBlockTo(Block block, Program program) {
+        changes = true;
+        program.addBlock(block);
     }
 
     public static void addStudent(Student s) {

@@ -60,7 +60,7 @@ public class Student {
         gs.add(p.getGrade(this.grades));
         if (p.getBlocks() != null) for (Block b : p.getBlocks()) {
             gs.add(b.getGrade(gradesInArray));
-            if (!(b instanceof SimpleBlock)) for (SchoolClass scl : b.getClasses()) gs.add(scl.getGrade(gradesInArray));
+            if (!(b instanceof SimpleBlock)) if (b.getClasses() != null) for (SchoolClass scl : b.getClasses()) gs.add(scl.getGrade(gradesInArray));
         }
         return gs.toArray(new Grade[0]);
     }

@@ -30,9 +30,7 @@ public class ProgramTableModel extends AbstractTableModel {
                 headers.add(b.toString());
                 if (!(b instanceof SimpleBlock)) for (SchoolClass scl : b.getClasses()) headers.add(scl.toString());
             }
-        } catch(NullPointerException e) {
-            System.err.println("Empty program detected!");
-        }
+        } catch(NullPointerException e) {}
 
         ArrayList<Student> stds = new ArrayList<Student>();
         for(Student s : studentsList) if(prog.equals(s.getProgram())) stds.add(s);

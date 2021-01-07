@@ -15,4 +15,5 @@ public abstract class Block extends TeachingUnit {
 
     public abstract Grade getGrade(Grade[] grades);
     public abstract SchoolClass[] getClasses();
+    public abstract void addClass(SchoolClass s);
 }

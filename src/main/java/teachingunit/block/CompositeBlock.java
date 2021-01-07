@@ -3,6 +3,8 @@ package teachingunit.block;
 import teachingunit.Grade;
 import teachingunit.SchoolClass;
 
+import java.util.ArrayList;
+
 /**
  * @author Quentin Garnier
  */
@@ -15,7 +17,7 @@ public class CompositeBlock extends Block {
         this.classes = cls;
 
         int nb = 0;
-        for(SchoolClass cl : cls) nb += cl.getNbCredits();
+        if(cls != null) for(SchoolClass cl : cls) nb += cl.getNbCredits();
         this.setNbCredits(nb);
     }
 
@@ -24,7 +26,15 @@ public class CompositeBlock extends Block {
     }
 
     public int nbOfClasses() {
+        if (this.classes == null) return 0;
         return this.classes.length;
+    }
+
+    public void addClass(SchoolClass scl) {
+        ArrayList<SchoolClass> list = new ArrayList<SchoolClass>();
+        if(this.classes != null) for(SchoolClass s: this.classes) list.add(s);
+        list.add(scl);
+        this.classes = list.toArray(new SchoolClass[0]);
     }
 
 
@@ -55,5 +65,13 @@ public class CompositeBlock extends Block {
             return res;
         }
         return null; //null uniquement si aucune note de grades ne correspond aux cours du bloc
+    }
+
+    @Override
+    public int getNbCredits() {
+        if(this.classes == null) return 0;
+        int res = 0;
+        for (SchoolClass s: this.classes) res += s.getNbCredits();
+        return res;
     }
 }

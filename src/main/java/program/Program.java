@@ -25,7 +25,7 @@ public class Program {
         this.blocks = bs;
     }
 
-    private void addBlock(Block b) {
+    public void addBlock(Block b) {
         if(this.blocks == null) this.blocks = new Block[] {b};
         else {
             Block[] newBlocs = new Block[blocks.length + 1];
