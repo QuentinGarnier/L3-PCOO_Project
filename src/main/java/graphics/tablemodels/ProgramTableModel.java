@@ -2,6 +2,7 @@ package graphics.tablemodels;
 
 import program.Program;
 import student.Student;
+import teachingunit.Grade;
 import teachingunit.SchoolClass;
 import teachingunit.block.*;
 
@@ -17,18 +18,29 @@ public class ProgramTableModel extends AbstractTableModel {
     private ArrayList<Student> students = new ArrayList<Student>();
     private ArrayList<String> headers = new ArrayList<String>();
     private Program program;
+    private boolean[] ind;
 
-    public ProgramTableModel(Program prog, Student[] studentsList) {
+    public ProgramTableModel(Program prog, boolean[] indexes, Student[] studentsList) {
         super();
         this.program = prog;
+        this.ind = indexes;
         headers.add("N° Étudiant");
         headers.add("Prénom");
         headers.add("Nom");
         headers.add(prog.toString());
         try {
+            int i = 0;
             for (Block b : prog.getBlocks()) {
-                headers.add(b.toString());
-                if (!(b instanceof SimpleBlock)) for (SchoolClass scl : b.getClasses()) headers.add(scl.toString());
+                if (indexes != null) {
+                    if (indexes[i]) {
+                        headers.add(b.toString());
+                        if (!(b instanceof SimpleBlock)) for (SchoolClass scl : b.getClasses()) headers.add(scl.toString());
+                    }
+                } else {
+                    headers.add(b.toString());
+                    if (!(b instanceof SimpleBlock)) for (SchoolClass scl : b.getClasses()) headers.add(scl.toString());
+                }
+                i++;
             }
         } catch(NullPointerException e) {}
 
@@ -57,7 +69,7 @@ public class ProgramTableModel extends AbstractTableModel {
             case 2: return students.get(rowIndex).getName();
             default:
                 if(columnIndex >= headers.size()) return null;
-                return students.get(rowIndex).calculateGradesOf(program)[columnIndex-3];
+                return students.get(rowIndex).calculateGradesOf(program)[columnIndex - 3];
         }
     }
 }

@@ -44,11 +44,11 @@ public class Minutes {
     private static String header(Program program) {
         String header = "\"N° Étudiant\",\"Nom\",\"Prénom\"," + info(program);
         int size = 1; //on ajoute la case de program
-        for(Block b : program.getBlocks()) {
+        if(program.getBlocks() != null) for(Block b : program.getBlocks()) {
             header += "," + info(b); //Add info of a block
             size ++;
             //Add classes' info of blocks (except for SimpleBlock which are already equivalent to a class):
-            if(!(b instanceof SimpleBlock)) for(SchoolClass scl : b.getClasses()) {
+            if(!(b instanceof SimpleBlock)) if(b.getClasses() != null) for(SchoolClass scl : b.getClasses()) {
                 header += "," + info(scl);
                 size++;
             }
